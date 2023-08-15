@@ -1,6 +1,18 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Input Page";
 }
 <h1>@ViewData["Title"]</h1>
-
-<p>Use this page to detail your site's privacy policy.</p>
+<form asp-controller="Home" asp-action="ShowKisiList" method="post">
+    <p>Press THE BUTTON to create KISI</p>
+    <p>Please enter the persons NAME:       <input type="text" name="inputName" /></p>
+    <p>Please enter the persons SURNAME:    <input type="text" name="inputSurname" /></p>
+    <p>Please enter the persons AGE:        <input type="number" name="inputAge" /></p>
+    <p>Please enter the SCHOOLS NAME:       <input type="text" name="schoolName" /></p>
+    <p>Please enter the SCHOOLS CITY:       <input type="text" name="schoolCity" /></p>
+    <p>Please enter the SCHOOLS DISTRICT:   <input type="text" name="schoolDistrict" /></p>
+    <p>Please enter the SCHOOLS SCORE:      <input type="number" name="schoolScore" /></p>
+    <p>Please enter the FOODS NAME:         <input type="text" name="foodName" /></p>
+    <p>Please enter the FOODS TYPE:         <input type="text" name="foodType" /></p>
+    <p>Please enter the FOODS COST:         <input type="number" name="foodCost" /></p>
+    <button type="submit">Submit</button>
+</form>
