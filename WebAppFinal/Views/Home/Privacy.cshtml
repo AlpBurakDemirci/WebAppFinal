@@ -6,7 +6,7 @@
      
     <div id="creatingTheKisi">
     
-                          <h2>Please emter the KISI's information</h2>
+                          <h2>Please enter the KISI's information</h2>
         <p>Please enter the persons NAME:       <input type="text" name="inputName" /></p>
         <p>Please enter the persons SURNAME:    <input type="text" name="inputSurname" /></p>
         <p>Please enter the persons AGE:        <input type="number" name="inputAge" /></p>
@@ -15,18 +15,18 @@
     </div>
 
 
-    <div id="enteringSchools" style="display:none">
+    <div id="enteringSchools" >
         
         <p>Please enter the SCHOOLS NAME:       <input type="text" name="schoolName" /></p>
         <p>Please enter the SCHOOLS CITY:       <input type="text" name="schoolCity" /></p>
         <p>Please enter the SCHOOLS DISTRICT:   <input type="text" name="schoolDistrict" /></p>
         <p>Please enter the SCHOOLS SCORE:      <input type="number" name="schoolScore" /></p>
-                    <button type="button" onclick="SwichCase('batchlorsDegree')">Next</button>
+                    <button type="button" id="schoolButton" onclick="SwichCase('batchlorsDegree')">Next</button>
 
     </div>
     
     
-    <div id="higherEducation" style="display:none">
+    <div id="higherEducation" >
        
         <p>Did this person went to any other SCHOOLS</p>
         <button type="button" onclick="SwichCase('yesButton1')">YES</button>
@@ -38,17 +38,17 @@
 
 
     
-    <div id="hungryShark" style="display:none">
+    <div id="hungryShark" >
     
         <p>Please enter the FOODS NAME:         <input type="text" name="foodName" /></p>
         <p>Please enter the FOODS TYPE:         <input type="text" name="foodType" /></p>
         <p>Please enter the FOODS COST:         <input type="number" name="foodCost" /></p>
-                    <button type="button" onclick="SwichCase('tnxForTheMeal')">Next</button>
+        <button type="button" onclick="SwichCase('tnxForTheMeal')">Next</button>
 
     </div>
     
 
-    <div id="oneTinyBite" style="display:none">
+    <div id="oneTinyBite" >
         
         <p>Does this person have any other FAVORITE FOOD</p>
         <button type="button" onclick="SwichCase('yesButton2')">YES</button>
@@ -57,13 +57,64 @@
     </div>
     
     
-    <div id="theNightmareIsOver" style="display:none">
+    <div id="theNightmareIsOver">
                     <p>Look at the KISIDEX?</p>
                 <button type="submit">Submit</button>
     </div>
 
 </form>
 <script>
+    var howHungry = 0;
+    var howStudious = 0;
+    TupleData Tuple new TupleData();
+    const Fridge = [
+        { foodName: 'fillerName', foodType: 'fillerType', cost: 0 }
+    ];
+    const BookShelf = [
+        { schoolName: 'fillerName', schoolCity: 'fillerCity', schoolDistrict: 'fillerDistrict', schoolScore: 0 }
+    ];
+    const Tuple = [BookShelf, Fridge];
+
+    const skulButton = document.getElementById('schoolButton');
+    const fudButton = document.getElementById('foodButton');
+    const BookShelf = [
+        {schoolName:'fillerName',schoolCity:'fillerCity',schoolDistrict:'fillerDistrict',schoolScore:0}
+    ];
+    skulButton.addEventListener('click', function () {
+        BookShelf[howStudious] = { schoolName: "schoolName", schoolCity: "schoolCity", schoolDistrict: "schoolDistrict", schoolScore: "schoolScore" }       
+    });
+    fudButton.addEventListener('click', function () {
+        Fridge[howHungry] = { foodName: "foodName", foodType: "foodType", foodCost: "foodCost" }
+    });
+    
+    async function sendDataToServer() {
+        try 
+        {
+            const ajaxData = new FormData(){ 
+                ajaxData.append('inputName',inputName);
+                ajaxData.append('inputSurname', inputSurname);
+                ajaxData.append('inputAge', inputAge);
+                ajaxData.append(Fridge);
+                ajaxData.append(BookShelf);
+            } 
+            await $.ajax({
+                type: "POST",
+                url: "/Home/ShowKisiList",
+                data: ajaxData,
+                processData: false;
+                contentType: false;
+            });
+            console.log("Data sent successfully.");
+        } 
+        catch (error) {
+            console.error("An error occurred:", error);
+        }
+    }
+    $('#theNightmareIsOverButton').on('click', function (event) {
+        event.preventDefault();
+        sendDataToServer();
+    });
+
     function SwichCase(identifiyer) {
         switch (identifiyer) {
 
@@ -73,6 +124,7 @@
                 break;
 
             case 'batchlorsDegree':
+                howStudious++;
                 enteringSchools.style.display = "none";
                 higherEducation.style.display = "block";
                 break;
@@ -86,6 +138,7 @@
                 hungryShark.style.display = "block";
                 break;
             case 'tnxForTheMeal':
+                howHungry++;
                 hungryShark.style.display = "none";
                 oneTinyBite.style.display = "block";
                 break;
@@ -96,6 +149,9 @@
             case 'noButton2':
                 oneTinyBite.style.display = "none";
                 theNightmareIsOver.style.display = "block";
+                break;
+            default:
+                console.log("Unknown case:" identifiyer);
                 break;
 
         }

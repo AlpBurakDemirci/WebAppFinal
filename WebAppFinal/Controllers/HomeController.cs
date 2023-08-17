@@ -1,6 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebAppFinal.Models;
 
 namespace WebAppFinal.Controllers
@@ -11,7 +15,7 @@ namespace WebAppFinal.Controllers
         public static List<Kisi> kisis = new List<Kisi>();
         public List<School> schools = new List<School>();
         public List<Food> foods = new List<Food>();
-
+        //food ve school u test sonrası staticledim , bunu test etmedim daha
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -32,58 +36,38 @@ namespace WebAppFinal.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        [HttpPost]
-        public void CreateEverything(string name, string surname, int age, string schoolName, string schoolCity, string schoolDistrict, int schoolScore, string foodName, string foodType, int foodCost)
+        public IActionResult ShowKisiList(string inputName, string inputSurname, int inputAge, List<Food> futs, List<School> skul)
         {
-            CreateKisi();
-            AddToKisi(name, surname, age);
-            CreateFood(foodName, foodType, foodCost);
-            CreateSchool(schoolName, schoolCity, schoolDistrict, schoolScore);
-        }
-
-        [HttpPost]
-        public void CreateKisi() 
-        { 
-        
             Kisi kisi = new Kisi();
             kisis.Add(kisi);
-
-        }
-
-        [HttpPost]
-        public void AddToKisi(string name,string surname,int age)
-        {
-            kisis.Last<Kisi>().Name = name;
-            kisis.Last<Kisi>().Surname = surname;
-            kisis.Last<Kisi>().Age = age;
-            kisis.Last<Kisi>().Schools = schools;
-            kisis.Last<Kisi>().Foods = foods;
-        }
-        [HttpPost]
-        public void CreateFood(string foodName, string foodType, int foodCost)
-        {
-            Food fd = new Food();
-            fd.Name = foodName;
-            fd.Type = foodType;
-            fd.Cost = foodCost;
-            foods.Add(fd);
-        }
-
-        [HttpPost]
-        public void CreateSchool(string schoolName, string schoolCity, string schoolDistrict, int schoolScore)
-        {
-            School sc = new School();
-            sc.Name = schoolName;
-            sc.City = schoolCity;
-            sc.District = schoolDistrict;
-            sc.Score = schoolScore;
-            schools.Add(sc);
-        }
-        public IActionResult ShowKisiList(string inputName, string inputSurname, int inputAge, string schoolName, string schoolCity, string schoolDistrict, int schoolScore, string foodName, string foodType, int foodCost)
-        {
-            CreateEverything(inputName, inputSurname, inputAge, schoolName, schoolCity, schoolDistrict, schoolScore, foodName, foodType, foodCost);
+            foreach (var shrimps in futs)
+            {
+                Food fd = new Food();
+                fd.Name = shrimps.Name;
+                fd.Type = shrimps.Type;
+                fd.Cost = shrimps.Cost;
+                kisis.Last<Kisi>().Foods.Add(fd);
+            }
+            foreach (var shrimps in skul)
+            {
+                School sc = new School();
+                sc.Name = shrimps.Name;
+                sc.City = shrimps.City;
+                sc.District = shrimps.District;
+                sc.Score = shrimps.Score;
+                kisis.Last<Kisi>().Schools.Add(sc);
+            }
+            kisis.Last<Kisi>().Name = inputName;
+            kisis.Last<Kisi>().Surname = inputSurname;
+            kisis.Last<Kisi>().Age = inputAge;
             return View(kisis);
         }
 
     }
 }
+
+
+// 1 kişi per 1 school/food tam çalışıyor
+// 1 kişi per 2 school/food 1.school/food u unutuyor
+// 2 kişi per 1 school/food tam çalışıyor
+// 2 kişi per 2 school/food 1.school/food u unutuyor
