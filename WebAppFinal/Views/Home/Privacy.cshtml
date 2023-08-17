@@ -4,120 +4,72 @@
 <h1>@ViewData["Title"]</h1>
 <form asp-controller="Home" asp-action="ShowKisiList" method="post">
      
-    <div id="creatingTheKisi">
+    <div id="creatingTheKisi" style="display:block">
     
                           <h2>Please enter the KISI's information</h2>
         <p>Please enter the persons NAME:       <input type="text" name="inputName" /></p>
         <p>Please enter the persons SURNAME:    <input type="text" name="inputSurname" /></p>
         <p>Please enter the persons AGE:        <input type="number" name="inputAge" /></p>
-                    <button type="button" onclick="SwichCase('startUp')">Next</button>
+                    <button type="button" onclick="SwitchCase('startUp')">Next</button>
     
     </div>
 
 
-    <div id="enteringSchools" >
+    <div id="enteringSchools" style="display:none">
         
-        <p>Please enter the SCHOOLS NAME:       <input type="text" name="schoolName" /></p>
-        <p>Please enter the SCHOOLS CITY:       <input type="text" name="schoolCity" /></p>
-        <p>Please enter the SCHOOLS DISTRICT:   <input type="text" name="schoolDistrict" /></p>
-        <p>Please enter the SCHOOLS SCORE:      <input type="number" name="schoolScore" /></p>
-                    <button type="button" id="schoolButton" onclick="SwichCase('batchlorsDegree')">Next</button>
+        <p>Please enter the SCHOOLS NAME:       <input type="text" id="schoolName" name="schoolName" /></p>
+        <p>Please enter the SCHOOLS CITY:       <input type="text" id="schoolCity" name="schoolCity" /></p>
+        <p>Please enter the SCHOOLS DISTRICT:   <input type="text" id="schoolDistrict" name="schoolDistrict" /></p>
+        <p>Please enter the SCHOOLS SCORE:      <input type="number" id="schoolScore" name="schoolScore" /></p>
+                    <button type="button" id="schoolButton" onclick="SwitchCase('batchlorsDegree')">Next</button>
 
     </div>
     
     
-    <div id="higherEducation" >
+    <div id="higherEducation" style="display:none">
        
         <p>Did this person went to any other SCHOOLS</p>
-        <button type="button" onclick="SwichCase('yesButton1')">YES</button>
-        <button type="button" onclick="SwichCase('noButton1')">NO</button>
+        <button type="button" onclick="SwitchCase('yesButton1')">YES</button>
+        <button type="button" onclick="SwitchCase('noButton1')">NO</button>
 
     </div>
 
 
 
-
     
-    <div id="hungryShark" >
+    <div id="hungryShark" style="display:none">
     
-        <p>Please enter the FOODS NAME:         <input type="text" name="foodName" /></p>
-        <p>Please enter the FOODS TYPE:         <input type="text" name="foodType" /></p>
-        <p>Please enter the FOODS COST:         <input type="number" name="foodCost" /></p>
-        <button type="button" onclick="SwichCase('tnxForTheMeal')">Next</button>
+        <p>Please enter the FOODS NAME:         <input type="text" id="foodName" name="foodName" /></p>
+        <p>Please enter the FOODS TYPE:         <input type="text" id="foodType" name="foodType" /></p>
+        <p>Please enter the FOODS COST:         <input type="number" id="foodCost" name="foodCost" /></p>
+        <button type="button" id="reflect" onclick="SwitchCase('tnxForTheMeal')">Next</button>
 
     </div>
     
 
-    <div id="oneTinyBite" >
+    <div id="oneTinyBite" style="display:none">
         
         <p>Does this person have any other FAVORITE FOOD</p>
-        <button type="button" onclick="SwichCase('yesButton2')">YES</button>
-        <button type="button" onclick="SwichCase('noButton2')">NO</button>
+        <button type="button" onclick="SwitchCase('yesButton2')">YES</button>
+        <button type="button" onclick="SwitchCase('noButton2')">NO</button>
 
     </div>
     
     
-    <div id="theNightmareIsOver">
+    <div id="theNightmareIsOver" style="display:none">
                     <p>Look at the KISIDEX?</p>
-                <button type="submit">Submit</button>
+        <button type="button" id="theNightmareIsOverButton">Submit</button>
+        <button type="submit" style="display:none"></button>
     </div>
 
 </form>
 <script>
     var howHungry = 0;
     var howStudious = 0;
-    TupleData Tuple new TupleData();
-    const Fridge = [
-        { foodName: 'fillerName', foodType: 'fillerType', cost: 0 }
-    ];
-    const BookShelf = [
-        { schoolName: 'fillerName', schoolCity: 'fillerCity', schoolDistrict: 'fillerDistrict', schoolScore: 0 }
-    ];
-    const Tuple = [BookShelf, Fridge];
-
-    const skulButton = document.getElementById('schoolButton');
-    const fudButton = document.getElementById('foodButton');
-    const BookShelf = [
-        {schoolName:'fillerName',schoolCity:'fillerCity',schoolDistrict:'fillerDistrict',schoolScore:0}
-    ];
-    skulButton.addEventListener('click', function () {
-        BookShelf[howStudious] = { schoolName: "schoolName", schoolCity: "schoolCity", schoolDistrict: "schoolDistrict", schoolScore: "schoolScore" }       
-    });
-    fudButton.addEventListener('click', function () {
-        Fridge[howHungry] = { foodName: "foodName", foodType: "foodType", foodCost: "foodCost" }
-    });
-    
-    async function sendDataToServer() {
-        try 
-        {
-            const ajaxData = new FormData(){ 
-                ajaxData.append('inputName',inputName);
-                ajaxData.append('inputSurname', inputSurname);
-                ajaxData.append('inputAge', inputAge);
-                ajaxData.append(Fridge);
-                ajaxData.append(BookShelf);
-            } 
-            await $.ajax({
-                type: "POST",
-                url: "/Home/ShowKisiList",
-                data: ajaxData,
-                processData: false;
-                contentType: false;
-            });
-            console.log("Data sent successfully.");
-        } 
-        catch (error) {
-            console.error("An error occurred:", error);
-        }
-    }
-    $('#theNightmareIsOverButton').on('click', function (event) {
-        event.preventDefault();
-        sendDataToServer();
-    });
-
-    function SwichCase(identifiyer) {
+    var Fridge = {};
+    var BookShelf = {};
+    function SwitchCase(identifiyer) {
         switch (identifiyer) {
-
             case 'startUp':
                 creatingTheKisi.style.display = "none";
                 enteringSchools.style.display = "block";
@@ -133,27 +85,85 @@
                 higherEducation.style.display = "none";
                 enteringSchools.style.display = "block";
                 break;
+
             case 'noButton1':
                 higherEducation.style.display = "none";
                 hungryShark.style.display = "block";
                 break;
+
             case 'tnxForTheMeal':
                 howHungry++;
                 hungryShark.style.display = "none";
                 oneTinyBite.style.display = "block";
                 break;
+
             case 'yesButton2':
                 oneTinyBite.style.display = "none";
                 hungryShark.style.display = "block";
                 break;
+
             case 'noButton2':
                 oneTinyBite.style.display = "none";
                 theNightmareIsOver.style.display = "block";
                 break;
-            default:
-                console.log("Unknown case:" identifiyer);
-                break;
 
+            default:
+                console.log("Unknown case: " + identifiyer);
+                break;
         }
     }
+    const skulButton = document.getElementById('schoolButton');
+    const fudButton = document.getElementById('reflect');
+
+    skulButton.addEventListener('click', function () {
+        BookShelf[howStudious] = { schoolName: document.getElementById("schoolName").value, schoolCity: document.getElementById("schoolCity").value, schoolDistrict: document.getElementById("schoolDistrict").value, schoolScore: document.getElementById("schoolScore").value }
+    });
+    fudButton.addEventListener('click', function () {
+        Fridge[howHungry] = {
+            foodName: document.getElementById("foodName").value,
+            foodType: document.getElementById("foodType").value,
+            foodCost: document.getElementById("foodCost").value
+        };
+    });
+    
+    async function sendDataToServer() {
+        try 
+        {
+                const ajaxData = new FormData();
+                {
+                ajaxData.append('inputName', document.querySelector('input[name="inputName"]').value);
+                ajaxData.append('inputSurname', document.querySelector('input[name="inputSurname"]').value);
+                ajaxData.append('inputAge', document.querySelector('input[name="inputAge"]').value);
+
+                for (const food of Object.values(Fridge)) {
+                    ajaxData.append('futs.Name', food.foodName);
+                    ajaxData.append('futs.Type', food.foodType);
+                    ajaxData.append('futs.Cost', food.foodCost);
+                }
+
+                for (const school of Object.values(BookShelf)) {
+                    ajaxData.append('skul.Name', school.schoolName);
+                    ajaxData.append('skul.City', school.schoolCity);
+                    ajaxData.append('skul.District', school.schoolDistrict);
+                    ajaxData.append('skul.Score', school.schoolScore);
+                }
+            } 
+            await $.ajax({
+                type: "POST",
+                url: "/Home/ShowKisiList",
+                data: ajaxData,
+                processData: false,
+                contentType: false,
+            });
+            console.log("Data sent successfully.");
+        } 
+        catch (error) {
+            console.error("An error occurred:", error);
+        }
+    }
+    $('#theNightmareIsOverButton').on('click', function (event) {
+        event.preventDefault();
+        sendDataToServer();
+        document.getElementById("theNightmareIsOverButton").click;
+    });
 </script>

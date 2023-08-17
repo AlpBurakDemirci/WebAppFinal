@@ -36,25 +36,25 @@ namespace WebAppFinal.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        public IActionResult ShowKisiList(string inputName, string inputSurname, int inputAge, List<Food> futs, List<School> skul)
+        public IActionResult ShowKisiList(string inputName, string inputSurname, int inputAge, Food[] futs, School[] skul)
         {
             Kisi kisi = new Kisi();
             kisis.Add(kisi);
-            foreach (var shrimps in futs)
+            for (int f = 0 ; f < futs.Length; f++)
             {
                 Food fd = new Food();
-                fd.Name = shrimps.Name;
-                fd.Type = shrimps.Type;
-                fd.Cost = shrimps.Cost;
+                fd.Name = futs[f].Name;
+                fd.Type = futs[f].Type;
+                fd.Cost = futs[f].Cost;
                 kisis.Last<Kisi>().Foods.Add(fd);
             }
-            foreach (var shrimps in skul)
+            for (int s = 0 ; s < skul.Length; s++)
             {
                 School sc = new School();
-                sc.Name = shrimps.Name;
-                sc.City = shrimps.City;
-                sc.District = shrimps.District;
-                sc.Score = shrimps.Score;
+                sc.Name = skul[s].Name;
+                sc.City = skul[s].City;
+                sc.District = skul[s].District;
+                sc.Score = skul[s].Score;
                 kisis.Last<Kisi>().Schools.Add(sc);
             }
             kisis.Last<Kisi>().Name = inputName;
