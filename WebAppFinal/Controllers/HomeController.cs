@@ -36,35 +36,62 @@ namespace WebAppFinal.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        public IActionResult ShowKisiList(string inputName, string inputSurname, int inputAge, Food[] futs, School[] skul)
+        public IActionResult ShowKisiList(string inputName, string inputSurname, int inputAge,string futs,string skul)
         {
             Kisi kisi = new Kisi();
             kisis.Add(kisi);
-            for (int f = 0 ; f < futs.Length; f++)
+            while (!string.IsNullOrEmpty(futs))
             {
+                int semicolonIndex = futs.IndexOf(';');
                 Food fd = new Food();
-                fd.Name = futs[f].Name;
-                fd.Type = futs[f].Type;
-                fd.Cost = futs[f].Cost;
-                kisis.Last<Kisi>().Foods.Add(fd);
+                
+                    fd.Name = futs.Substring(0, semicolonIndex);
+                    futs = futs.Substring(semicolonIndex + 1);
+                    semicolonIndex = futs.IndexOf(';');
+                
+                    fd.Type = futs.Substring(0, semicolonIndex);
+                    futs = futs.Substring(semicolonIndex + 1);
+                    semicolonIndex = futs.IndexOf(';');
+                
+                    fd.Cost = int.Parse(futs.Substring(0, semicolonIndex));
+                    futs = futs.Substring(semicolonIndex + 1);
+                    
+                    kisis.Last<Kisi>().Foods.Add(fd);
             }
-            for (int s = 0 ; s < skul.Length; s++)
-            {
-                School sc = new School();
-                sc.Name = skul[s].Name;
-                sc.City = skul[s].City;
-                sc.District = skul[s].District;
-                sc.Score = skul[s].Score;
-                kisis.Last<Kisi>().Schools.Add(sc);
+            while (!string.IsNullOrEmpty(skul))
+                {
+                    School sc = new School();
+                    int semicolonIndex = skul.IndexOf(';');
+
+                    sc.Name = skul.Substring(0, semicolonIndex);
+                    skul = skul.Substring(semicolonIndex + 1);
+                    semicolonIndex = skul.IndexOf(';');
+
+                    sc.City = skul.Substring(0, semicolonIndex);
+                    skul = skul.Substring(semicolonIndex + 1);
+                    semicolonIndex = skul.IndexOf(';');
+
+                    sc.District = skul.Substring(0, semicolonIndex);
+                    skul = skul.Substring(semicolonIndex + 1);
+                    semicolonIndex = skul.IndexOf(';');
+
+                    sc.Score = int.Parse(skul.Substring(0, semicolonIndex));
+                    skul = skul.Substring(semicolonIndex + 1);
+                    
+                    kisis.Last<Kisi>().Schools.Add(sc);
+                }
+                kisis.Last<Kisi>().Name = inputName;
+                kisis.Last<Kisi>().Surname = inputSurname;
+                kisis.Last<Kisi>().Age = inputAge;
+                return View(kisis);
+
             }
-            kisis.Last<Kisi>().Name = inputName;
-            kisis.Last<Kisi>().Surname = inputSurname;
-            kisis.Last<Kisi>().Age = inputAge;
-            return View(kisis);
+
+
         }
 
     }
-}
+
 
 
 // 1 kişi per 1 school/food tam çalışıyor

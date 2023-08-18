@@ -16,7 +16,7 @@
 
 
     <div id="enteringSchools" style="display:none">
-        
+        <p>Make sure none of the values has a semicolon</p>
         <p>Please enter the SCHOOLS NAME:       <input type="text" id="schoolName" name="schoolName" /></p>
         <p>Please enter the SCHOOLS CITY:       <input type="text" id="schoolCity" name="schoolCity" /></p>
         <p>Please enter the SCHOOLS DISTRICT:   <input type="text" id="schoolDistrict" name="schoolDistrict" /></p>
@@ -38,7 +38,7 @@
 
     
     <div id="hungryShark" style="display:none">
-    
+        <p>Make sure none of the values has a semicolon</p>
         <p>Please enter the FOODS NAME:         <input type="text" id="foodName" name="foodName" /></p>
         <p>Please enter the FOODS TYPE:         <input type="text" id="foodType" name="foodType" /></p>
         <p>Please enter the FOODS COST:         <input type="number" id="foodCost" name="foodCost" /></p>
@@ -68,10 +68,8 @@
 
 </form>
 <script>
-    var howHungry = 0;
-    var howStudious = 0;
-    var Fridge = {};
-    var BookShelf = {};
+    var BookShelf;
+    var Fridge;
     function SwitchCase(identifiyer) {
         switch (identifiyer) {
             case 'startUp':
@@ -80,7 +78,6 @@
                 break;
 
             case 'batchlorsDegree':
-                howStudious++;
                 enteringSchools.style.display = "none";
                 higherEducation.style.display = "block";
                 break;
@@ -96,7 +93,6 @@
                 break;
 
             case 'tnxForTheMeal':
-                howHungry++;
                 hungryShark.style.display = "none";
                 oneTinyBite.style.display = "block";
                 break;
@@ -123,40 +119,29 @@
     }
     const skulButton = document.getElementById('schoolButton');
     const fudButton = document.getElementById('reflect');
+    const schoolData = document.getElementById('enteringSchools');
+    const foodData = document.getElementById('hungryShark');
 
     skulButton.addEventListener('click', function () {
-        BookShelf[howStudious] = { schoolName: document.getElementById("schoolName").value, schoolCity: document.getElementById("schoolCity").value, schoolDistrict: document.getElementById("schoolDistrict").value, schoolScore: document.getElementById("schoolScore").value }
+        var FakeSchool = schoolData.querySelector('input[name="schoolName"]').value + ";" + schoolData.querySelector('input[name="schoolCity"]').value + ";" + schoolData.querySelector('input[name="schoolDistrict"]').value + ";" + schoolData.querySelector('input[name="schoolScore"]').value + ";";
+        BookShelf = BookShelf + FakeSchool;
     });
     fudButton.addEventListener('click', function () {
-        Fridge[howHungry] = {
-            foodName: document.getElementById("foodName").value,
-            foodType: document.getElementById("foodType").value,
-            foodCost: document.getElementById("foodCost").value
-        };
+        var FakeFood = foodData.querySelector('input[name="foodName"]').value + ";" + foodData.querySelector('input[name="foodType"]').value + ";" + foodData.querySelector('input[name="foodCost"]').value + ";";
+        Fridge = Fridge + FakeFood;
     });
     
     async function sendDataToServer() {
         try 
         {
                 const ajaxData = new FormData();
-                {
+            {
                 ajaxData.append('inputName', document.querySelector('input[name="inputName"]').value);
                 ajaxData.append('inputSurname', document.querySelector('input[name="inputSurname"]').value);
                 ajaxData.append('inputAge', document.querySelector('input[name="inputAge"]').value);
-
-                for (const food of Object.values(Fridge)) {
-                    ajaxData.append('futs.Name', food.foodName);
-                    ajaxData.append('futs.Type', food.foodType);
-                    ajaxData.append('futs.Cost', food.foodCost);
-                }
-
-                for (const school of Object.values(BookShelf)) {
-                    ajaxData.append('skul.Name', school.schoolName);
-                    ajaxData.append('skul.City', school.schoolCity);
-                    ajaxData.append('skul.District', school.schoolDistrict);
-                    ajaxData.append('skul.Score', school.schoolScore);
-                }
-            } 
+                ajaxData.append('futs', Fridge);
+                ajaxData.append('skul', BookShelf);
+            }
             await $.ajax({
                 type: "POST",
                 url: "/Home/ShowKisiList",
