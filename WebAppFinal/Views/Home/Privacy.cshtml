@@ -17,11 +17,11 @@
 
     <div id="enteringSchools" style="display:none">
         <p>Make sure none of the values has a semicolon</p>
-        <p>Please enter the SCHOOLS NAME:       <input type="text" id="schoolName" name="schoolName" /></p>
-        <p>Please enter the SCHOOLS CITY:       <input type="text" id="schoolCity" name="schoolCity" /></p>
-        <p>Please enter the SCHOOLS DISTRICT:   <input type="text" id="schoolDistrict" name="schoolDistrict" /></p>
-        <p>Please enter the SCHOOLS SCORE:      <input type="number" id="schoolScore" name="schoolScore" /></p>
-                    <button type="button" id="schoolButton" onclick="SwitchCase('batchlorsDegree')">Next</button>
+        <p>Please enter the SCHOOLS NAME:       <input type="text" name="schoolName" /></p>
+        <p>Please enter the SCHOOLS CITY:       <input type="text" name="schoolCity" /></p>
+        <p>Please enter the SCHOOLS DISTRICT:   <input type="text" name="schoolDistrict" /></p>
+        <p>Please enter the SCHOOLS SCORE:      <input type="number" name="schoolScore" /></p>
+        <button type="button" id="schoolButton" onclick="SwitchCase('batchlorsDegree')">Next</button>
 
     </div>
     
@@ -68,8 +68,8 @@
 
 </form>
 <script>
-    var BookShelf;
-    var Fridge;
+    var BookShelf = "blah";
+    var Fridge = "blah";
     function SwitchCase(identifiyer) {
         switch (identifiyer) {
             case 'startUp':
@@ -122,14 +122,14 @@
     const schoolData = document.getElementById('enteringSchools');
     const foodData = document.getElementById('hungryShark');
 
-    skulButton.addEventListener('click', function () {
+    /*skulButton.addEventListener('click', function () {
         var FakeSchool = schoolData.querySelector('input[name="schoolName"]').value + ";" + schoolData.querySelector('input[name="schoolCity"]').value + ";" + schoolData.querySelector('input[name="schoolDistrict"]').value + ";" + schoolData.querySelector('input[name="schoolScore"]').value + ";";
         BookShelf = BookShelf + FakeSchool;
     });
     fudButton.addEventListener('click', function () {
         var FakeFood = foodData.querySelector('input[name="foodName"]').value + ";" + foodData.querySelector('input[name="foodType"]').value + ";" + foodData.querySelector('input[name="foodCost"]').value + ";";
         Fridge = Fridge + FakeFood;
-    });
+    });*/
     
     async function sendDataToServer() {
         try 
@@ -138,9 +138,10 @@
             {
                 ajaxData.append('inputName', document.querySelector('input[name="inputName"]').value);
                 ajaxData.append('inputSurname', document.querySelector('input[name="inputSurname"]').value);
-                ajaxData.append('inputAge', document.querySelector('input[name="inputAge"]').value);
-                ajaxData.append('futs', Fridge);
-                ajaxData.append('skul', BookShelf);
+                ajaxData.append('inputAge', document.querySelector('input[name="inputAge"]').value); 
+                ajaxData.append('futs', document.querySelector('input[name="foodName"]').value);
+                ajaxData.append('skul', document.querySelector('input[name="schoolName"]').value);
+
             }
             await $.ajax({
                 type: "POST",

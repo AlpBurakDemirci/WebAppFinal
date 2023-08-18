@@ -36,10 +36,13 @@ namespace WebAppFinal.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        public IActionResult ShowKisiList(string inputName, string inputSurname, int inputAge,string futs,string skul)
+        public IActionResult ShowKisiList(string inputName, string inputSurname, int inputAge, string futs, string skul)
         {
             Kisi kisi = new Kisi();
             kisis.Add(kisi);
+            kisi.Name = futs;
+            kisi.Surname = skul;
+            /*
             while (!string.IsNullOrEmpty(futs))
             {
                 int semicolonIndex = futs.IndexOf(';');
@@ -79,7 +82,7 @@ namespace WebAppFinal.Controllers
                     skul = skul.Substring(semicolonIndex + 1);
                     
                     kisis.Last<Kisi>().Schools.Add(sc);
-                }
+                }*/
                 kisis.Last<Kisi>().Name = inputName;
                 kisis.Last<Kisi>().Surname = inputSurname;
                 kisis.Last<Kisi>().Age = inputAge;
@@ -89,8 +92,7 @@ namespace WebAppFinal.Controllers
 
 
         }
-
-    }
+}
 
 
 
