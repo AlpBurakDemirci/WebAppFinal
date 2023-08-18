@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Output Person";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    @{int i = 0;
+        @foreach (var kisi in Model)
+        {
+            i++;
+            <p>@i. Person is:</p>
+        <div class="kisi">
+            <div> Name:     @kisi.Name</div>
+            <div> Surname:  @kisi.Surname</div>
+            <div> Age:      @kisi.Age</div>
+
+            <div class="schools">
+                <p>This person went to:</p>
+                @foreach (var school in kisi.Schools)
+                {<br />
+                    <div class="school">
+                        <div>   School:     @school.Name</div>
+                        <div>   City:       @school.City</div>
+                        <div>   District:   @school.District</div>
+                        <div>   Score:      @school.Score</div>
+                    </div>
+                }
+            </div>
+            <br />
+            <div class="favoriteFood">
+                <p>This persons favorite foods are:</p>
+                @foreach (var food in kisi.Foods)
+                {<br/>
+                    <div class="food">
+                        <div>   Food:       @food.Name</div>
+                        <div>   Type:       @food.Type</div>
+                        <div>   Price:      @food.Cost</div>
+                    </div>
+                }
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+    }
+    }
+</div>
+<br />
+<br />
+<br />
