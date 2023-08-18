@@ -36,53 +36,51 @@ namespace WebAppFinal.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        public IActionResult ShowKisiList(string inputName, string inputSurname, int inputAge, string futs, string skul)
+        [HttpPost]
+        public IActionResult ShowKisiList(string inputName, string inputSurname, int inputAge, string foodData, string schoolData)
         {
             Kisi kisi = new Kisi();
             kisis.Add(kisi);
-            kisi.Name = futs;
-            kisi.Surname = skul;
-            /*
-            while (!string.IsNullOrEmpty(futs))
+            while (!string.IsNullOrEmpty(foodData))
             {
-                int semicolonIndex = futs.IndexOf(';');
+                int semicolonIndex = foodData.IndexOf(';');
                 Food fd = new Food();
                 
-                    fd.Name = futs.Substring(0, semicolonIndex);
-                    futs = futs.Substring(semicolonIndex + 1);
-                    semicolonIndex = futs.IndexOf(';');
+                    fd.Name = foodData.Substring(0, semicolonIndex);
+                    foodData = foodData.Substring(semicolonIndex + 1);
+                    semicolonIndex = foodData.IndexOf(';');
                 
-                    fd.Type = futs.Substring(0, semicolonIndex);
-                    futs = futs.Substring(semicolonIndex + 1);
-                    semicolonIndex = futs.IndexOf(';');
+                    fd.Type = foodData.Substring(0, semicolonIndex);
+                    foodData = foodData.Substring(semicolonIndex + 1);
+                    semicolonIndex = foodData.IndexOf(';');
                 
-                    fd.Cost = int.Parse(futs.Substring(0, semicolonIndex));
-                    futs = futs.Substring(semicolonIndex + 1);
+                    fd.Cost = int.Parse(foodData.Substring(0, semicolonIndex));
+                    foodData = foodData.Substring(semicolonIndex + 1);
                     
                     kisis.Last<Kisi>().Foods.Add(fd);
             }
-            while (!string.IsNullOrEmpty(skul))
+            while (!string.IsNullOrEmpty(schoolData))
                 {
                     School sc = new School();
-                    int semicolonIndex = skul.IndexOf(';');
+                    int semicolonIndex = schoolData.IndexOf(';');
 
-                    sc.Name = skul.Substring(0, semicolonIndex);
-                    skul = skul.Substring(semicolonIndex + 1);
-                    semicolonIndex = skul.IndexOf(';');
+                    sc.Name = schoolData.Substring(0, semicolonIndex);
+                    schoolData = schoolData.Substring(semicolonIndex + 1);
+                    semicolonIndex = schoolData.IndexOf(';');
 
-                    sc.City = skul.Substring(0, semicolonIndex);
-                    skul = skul.Substring(semicolonIndex + 1);
-                    semicolonIndex = skul.IndexOf(';');
+                    sc.City = schoolData.Substring(0, semicolonIndex);
+                    schoolData = schoolData.Substring(semicolonIndex + 1);
+                    semicolonIndex = schoolData.IndexOf(';');
 
-                    sc.District = skul.Substring(0, semicolonIndex);
-                    skul = skul.Substring(semicolonIndex + 1);
-                    semicolonIndex = skul.IndexOf(';');
+                    sc.District = schoolData.Substring(0, semicolonIndex);
+                    schoolData = schoolData.Substring(semicolonIndex + 1);
+                    semicolonIndex = schoolData.IndexOf(';');
 
-                    sc.Score = int.Parse(skul.Substring(0, semicolonIndex));
-                    skul = skul.Substring(semicolonIndex + 1);
+                    sc.Score = int.Parse(schoolData.Substring(0, semicolonIndex));
+                    schoolData = schoolData.Substring(semicolonIndex + 1);
                     
                     kisis.Last<Kisi>().Schools.Add(sc);
-                }*/
+                }
                 kisis.Last<Kisi>().Name = inputName;
                 kisis.Last<Kisi>().Surname = inputSurname;
                 kisis.Last<Kisi>().Age = inputAge;
