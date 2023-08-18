@@ -58,8 +58,12 @@
     
     <div id="theNightmareIsOver" style="display:none">
                     <p>Look at the KISIDEX?</p>
-        <button type="button" id="theNightmareIsOverButton">Submit</button>
-        <button type="submit" style="display:none"></button>
+        <button type="button" id="theNightmareIsOverButton" onclick="SwitchCase('theNightmareIsOverButton')">Submit</button>
+    </div>
+
+    <div id="really" style="display:none">
+        <p>Are You Sure?</p>
+        <button type="submit">Submit</button>
     </div>
 
 </form>
@@ -105,6 +109,11 @@
             case 'noButton2':
                 oneTinyBite.style.display = "none";
                 theNightmareIsOver.style.display = "block";
+                break;
+
+            case 'theNightmareIsOverButton':
+                theNightmareIsOver.style.display = "none";
+                really.style.display = "block";
                 break;
 
             default:
