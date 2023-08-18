@@ -43,9 +43,9 @@ namespace WebAppFinal.Controllers
             kisis.Add(kisi);
             while (!string.IsNullOrEmpty(foodData))
             {
-                int semicolonIndex = foodData.IndexOf(';');
-                Food fd = new Food();
-                
+                    Food fd = new Food();
+                    int semicolonIndex = foodData.IndexOf(';');
+
                     fd.Name = foodData.Substring(0, semicolonIndex);
                     foodData = foodData.Substring(semicolonIndex + 1);
                     semicolonIndex = foodData.IndexOf(';');

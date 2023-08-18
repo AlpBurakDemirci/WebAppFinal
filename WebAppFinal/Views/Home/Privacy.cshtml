@@ -70,13 +70,15 @@
 
 </form>
 <script>
+    var Fridge;
+    var BookShelf;
     function updateHiddenFoodField() {
         var foodName = document.getElementById("foodName").value;
         var foodType = document.getElementById("foodType").value;
         var foodCost = document.getElementById("foodCost").value;
 
         var foodData = foodName + ';' + foodType + ';' + foodCost + ';';
-        document.getElementById("foodData").value = foodData;
+        document.getElementById("foodData").value = document.getElementById("foodData").value + foodData;
     }
     function updateHiddenSchoolField() { 
         var schoolName = document.getElementById("schoolName").value;
@@ -85,7 +87,9 @@
         var schoolScore = document.getElementById("schoolScore").value;
     
         var schoolData = schoolName + ';' + schoolCity + ';' + schoolDistrict + ';' + schoolScore + ';';
-        document.getElementById("schoolData").value = schoolData;
+        document.getElementById("schoolData").value = document.getElementById("schoolData").value + schoolData;
+    }
+    function fixData() { 
     }
     function SwitchCase(identifiyer) {
         switch (identifiyer) {
@@ -100,11 +104,13 @@
                 break;
 
             case 'yesButton1':
+                BookShelf = BookShelf + schoolData;
                 higherEducation.style.display = "none";
                 enteringSchools.style.display = "block";
                 break;
 
             case 'noButton1':
+                BookShelf = BookShelf + schoolData;
                 higherEducation.style.display = "none";
                 hungryShark.style.display = "block";
                 break;
@@ -115,11 +121,13 @@
                 break;
 
             case 'yesButton2':
+                Fridge = Fridge + foodData;
                 oneTinyBite.style.display = "none";
                 hungryShark.style.display = "block";
                 break;
 
             case 'noButton2':
+                Fridge = Fridge + foodData;
                 oneTinyBite.style.display = "none";
                 theNightmareIsOver.style.display = "block";
                 break;
@@ -138,7 +146,6 @@
     const fudButton = document.getElementById('reflect');
     const schoolData = document.getElementById('enteringSchools');
     const foodData = document.getElementById('hungryShark');
-    
     skulButton.addEventListener('click', function () {
         SwitchCase('batchlorsDegree');
         updateHiddenSchoolField();
@@ -175,6 +182,7 @@
         }
     }
     $('#theNightmareIsOverButton').on('click', function (event) {
+        fixData();
         event.preventDefault();
         sendDataToServer();
         document.getElementById("theNightmareIsOverButton").click;
