@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Other Food Page";
+}
+@using WebAppFinal.Models
+<h1>@ViewData["Title"]</h1>
+
+<form asp-controller="Home" asp-action="FoodView" method="post" , id="formId">
+
+    <p>Does this person have any other FAVORITE FOOD</p>
+    <button type="submit" id="YesButton">YES</button>
+    <button type="button" id="NoButton" onclick="nobuttonclick()">NO</button>
+</form>
+    
+<script>
+    function nobuttonclick() {
+        var form = document.getElementById("formId");
+        form.action = '@Url.Action("ShowKisiList", "Home")';
+        form.submit();
+    }
+</script>

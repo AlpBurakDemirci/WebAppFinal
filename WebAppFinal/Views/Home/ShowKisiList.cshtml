@@ -17,25 +17,25 @@
 
             <div class="schools">
                 <p>This person went to:</p>
-                @foreach (var school in kisi.Schools)
+                @foreach (var school in kisi.SchoolList)
                 {<br />
                     <div class="school">
-                        <div>   School:     @school.Name</div>
-                        <div>   City:       @school.City</div>
-                        <div>   District:   @school.District</div>
-                        <div>   Score:      @school.Score</div>
+                        <div>   Name:       @school.SchoolName</div>
+                        <div>   City:       @school.SchoolCity</div>
+                        <div>   District:   @school.SchoolDistrict</div>
+                        <div>   Score:      @school.SchoolScore</div>
                     </div>
                 }
             </div>
             <br />
             <div class="favoriteFood">
                 <p>This persons favorite foods are:</p>
-                @foreach (var food in kisi.Foods)
+                @foreach (var food in kisi.FoodList)
                 {<br/>
                     <div class="food">
-                        <div>   Food:       @food.Name</div>
-                        <div>   Type:       @food.Type</div>
-                        <div>   Price:      @food.Cost</div>
+                        <div>   Name:       @food.FoodName</div>
+                        <div>   Type:       @food.FoodType</div>
+                        <div>   Price:      @food.FoodCost</div>
                     </div>
                 }
             </div>
