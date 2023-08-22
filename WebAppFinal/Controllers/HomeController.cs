@@ -12,10 +12,9 @@ namespace WebAppFinal.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        public static List<Kisi> kisis = new List<Kisi>();
-        public List<School> schools = new List<School>();
-        public List<Food> foods = new List<Food>();
-        //food ve school u test sonrası staticledim , bunu test etmedim daha
+        public static List<Kisi> kisis = new();
+        public static List<School> SchoolList = new();
+        public static List<Food> FoodList = new();
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -28,7 +27,10 @@ namespace WebAppFinal.Controllers
 
         public IActionResult Privacy()
         {
+            SchoolList.Clear();
+            FoodList.Clear();
             return View();
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -36,65 +38,59 @@ namespace WebAppFinal.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
         [HttpPost]
-        public IActionResult ShowKisiList(string inputName, string inputSurname, int inputAge, string foodData, string schoolData)
+        public IActionResult CreateKisi([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] Kisi kisi)
         {
-            Kisi kisi = new Kisi();
             kisis.Add(kisi);
-            while (!string.IsNullOrEmpty(foodData))
-            {
-                    Food fd = new Food();
-                    int semicolonIndex = foodData.IndexOf(';');
+            return View("SchoolView");
+        }
+        [HttpPost]
+        public IActionResult SchoolView()
+        {
+            return View();
+        }
 
-                    fd.Name = foodData.Substring(0, semicolonIndex);
-                    foodData = foodData.Substring(semicolonIndex + 1);
-                    semicolonIndex = foodData.IndexOf(';');
-                
-                    fd.Type = foodData.Substring(0, semicolonIndex);
-                    foodData = foodData.Substring(semicolonIndex + 1);
-                    semicolonIndex = foodData.IndexOf(';');
-                
-                    fd.Cost = int.Parse(foodData.Substring(0, semicolonIndex));
-                    foodData = foodData.Substring(semicolonIndex + 1);
-                    
-                    kisis.Last<Kisi>().Foods.Add(fd);
-            }
-            while (!string.IsNullOrEmpty(schoolData))
-                {
-                    School sc = new School();
-                    int semicolonIndex = schoolData.IndexOf(';');
+        [HttpPost]
 
-                    sc.Name = schoolData.Substring(0, semicolonIndex);
-                    schoolData = schoolData.Substring(semicolonIndex + 1);
-                    semicolonIndex = schoolData.IndexOf(';');
+        public IActionResult OtherSchool([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] School school)
+        {
 
-                    sc.City = schoolData.Substring(0, semicolonIndex);
-                    schoolData = schoolData.Substring(semicolonIndex + 1);
-                    semicolonIndex = schoolData.IndexOf(';');
-
-                    sc.District = schoolData.Substring(0, semicolonIndex);
-                    schoolData = schoolData.Substring(semicolonIndex + 1);
-                    semicolonIndex = schoolData.IndexOf(';');
-
-                    sc.Score = int.Parse(schoolData.Substring(0, semicolonIndex));
-                    schoolData = schoolData.Substring(semicolonIndex + 1);
-                    
-                    kisis.Last<Kisi>().Schools.Add(sc);
-                }
-                kisis.Last<Kisi>().Name = inputName;
-                kisis.Last<Kisi>().Surname = inputSurname;
-                kisis.Last<Kisi>().Age = inputAge;
-                return View(kisis);
-
-            }
-
+            SchoolList.Add(school);
+            return View();
 
         }
+
+        [HttpPost]
+        public IActionResult FoodView()
+        {
+
+            return View();
+
+        }
+
+        [HttpPost]
+        public IActionResult OtherFood([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] Food food)
+        {
+            FoodList.Add(food);
+            return View();
+
+        }
+
+        [HttpPost]
+
+        public IActionResult ShowKisiList()
+        {
+            int kisiId = kisis.Count() - 1;
+            foreach (School school in SchoolList) {
+                kisis[kisiId].SchoolList.Add(school);                   
+            }
+            foreach (Food food in FoodList)
+            {
+                kisis[kisiId].FoodList.Add(food);
+            }
+            return View(kisis);
+
+        }
+    }
 }
-
-
-
-// 1 kişi per 1 school/food tam çalışıyor
-// 1 kişi per 2 school/food 1.school/food u unutuyor
-// 2 kişi per 1 school/food tam çalışıyor
-// 2 kişi per 2 school/food 1.school/food u unutuyor

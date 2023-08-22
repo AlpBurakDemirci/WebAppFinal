@@ -2,8 +2,15 @@
 {
     public class Food
     {
-        public string? Name { get; set; }
-        public string? Type { get; set; }
-        public int? Cost { get; set; }
+        public string FoodName { get; set; }
+        public string FoodType { get; set; }
+        public int FoodCost { get; set; }
+
+        public Food(string FoodName, string FoodType, int FoodCost)
+        {
+            this.FoodName = FoodName;
+            this.FoodType = FoodType;
+            this.FoodCost = FoodCost;
+        }
     }
 }
