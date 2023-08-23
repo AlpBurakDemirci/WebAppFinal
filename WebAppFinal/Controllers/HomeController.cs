@@ -30,7 +30,6 @@ namespace WebAppFinal.Controllers
             SchoolList.Clear();
             FoodList.Clear();
             return View();
-
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -43,25 +42,53 @@ namespace WebAppFinal.Controllers
         public IActionResult CreateKisi([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] Kisi kisi)
         {
             kisis.Add(kisi);
-            return View("SchoolView");
+            return RedirectToAction("SchoolView");
         }
-        [HttpPost]
+
+        [HttpGet]
         public IActionResult SchoolView()
         {
+
             return View();
+        
         }
 
         [HttpPost]
 
-        public IActionResult OtherSchool([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] School school)
+        public IActionResult SchoolView([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] School school)
         {
 
             SchoolList.Add(school);
-            return View();
+            return RedirectToAction("OtherSchool");
 
         }
 
+        [HttpGet]
+        public IActionResult OtherSchool()
+        {
+
+            return View();
+        
+        }
+
         [HttpPost]
+        public IActionResult OtherSchool(Boolean YesNo)
+        {
+            if (YesNo){
+
+                return RedirectToAction("SchoolView");
+            
+            }
+            
+            else { 
+            
+                return RedirectToAction("FoodView"); 
+            
+            }
+        }
+
+
+        [HttpGet]
         public IActionResult FoodView()
         {
 
@@ -70,14 +97,38 @@ namespace WebAppFinal.Controllers
         }
 
         [HttpPost]
-        public IActionResult OtherFood([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] Food food)
+        public IActionResult FoodView([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] Food food)
         {
             FoodList.Add(food);
+            return RedirectToAction("OtherFood");
+
+        }
+        [HttpGet]
+        public IActionResult OtherFood()
+        {
+
             return View();
 
         }
 
         [HttpPost]
+        public IActionResult OtherFood(Boolean YesNo)
+        {
+            if (YesNo)
+            {
+
+                return RedirectToAction("FoodView");
+
+            }
+
+            else
+            {
+
+                return RedirectToAction("ShowKisiList");
+
+            }
+        }
+        [HttpGet]
 
         public IActionResult ShowKisiList()
         {
