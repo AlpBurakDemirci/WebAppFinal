@@ -7,6 +7,7 @@ namespace WebAppFinal.Models
     [ModelBinder(BinderType = typeof(ModelBinders.ModelBinderPlsWork))]
     public class Kisi
     {
+        public int Id { get; set; }
         public string? Name { get; set; }
         public string? Surname { get; set; }
         public int? Age { get; set; }
@@ -14,11 +15,12 @@ namespace WebAppFinal.Models
         public List<Food>? FoodList { get; set; } = new List<Food>();
         public Kisi() { }
 
-        public Kisi(string Name, string Surname, int Age)
+        public Kisi(string Name, string Surname, int Age, int Id)
         {
             this.Name = Name;
             this.Surname = Surname;
             this.Age = Age;
+            this.Id = Id;
         }
         public Kisi(string Name, string Surname, int Age, List<School> SchoolList)
         {
@@ -27,7 +29,7 @@ namespace WebAppFinal.Models
             this.Age = Age;
             for (int i = 0; i < SchoolList.Count; i++)
             {
-                School fakeSchool = new(SchoolList[i].SchoolName, SchoolList[i].SchoolCity, SchoolList[i].SchoolDistrict, SchoolList[i].SchoolScore);
+                School fakeSchool = new(SchoolList[i].SchoolId,SchoolList[i].SchoolName, SchoolList[i].SchoolCity, SchoolList[i].SchoolDistrict, SchoolList[i].SchoolScore);
                 this.SchoolList.Add(fakeSchool);
             }
         }
@@ -37,12 +39,12 @@ namespace WebAppFinal.Models
             this.Surname = Surname;
             this.Age = Age;
             for (int i = 0; i < SchoolList.Count; i++) {
-                School fakeSchool = new(SchoolList[i].SchoolName, SchoolList[i].SchoolCity, SchoolList[i].SchoolDistrict, SchoolList[i].SchoolScore);
+                School fakeSchool = new(SchoolList[i].SchoolId,SchoolList[i].SchoolName, SchoolList[i].SchoolCity, SchoolList[i].SchoolDistrict, SchoolList[i].SchoolScore);
                 this.SchoolList.Add(fakeSchool);    
             }
             for (int i = 0; i <FoodList.Count; i++)
             {
-                Food fakeFood = new(FoodList[i].FoodName, FoodList[i].FoodType, FoodList[i].FoodCost);
+                Food fakeFood = new(FoodList[i].FoodId,FoodList[i].FoodName, FoodList[i].FoodType, FoodList[i].FoodCost);
                 this.FoodList.Add(fakeFood);
             }
         }

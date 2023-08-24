@@ -3,16 +3,18 @@
 }
 
 <h1>@ViewData["Title"]</h1>
+<form asp-controller="Home" asp-action="ShowKisiList" method="post">
 <div>
-    @{
-        int i = 0;
-        @foreach (var kisi in Model)
+        @{
+            int i = 0;
+            int a = i - 1; 
+            @foreach (var kisi in Model)
         {
             i++;
-            <p style="font-size:x-large">@i. Person is:<div style="font-size:x-large">  @kisi.Name @kisi.Surname</div>
-                <div style="font-size:large">@kisi.Name @kisi.Surname is @kisi.Age years old.</div>
-            </p>
-
+            a++;
+            <p style="font-size:x-large">@i. Person is:  @kisi.Name @kisi.Surname  <button type="submit" name="kisiIndex" value=@a>Edit This Person</button>  
+            <div style="font-size:large">@kisi.Name @kisi.Surname is @kisi.Age years old.</div>
+            </p>//not almayı unutma!!!
             <div class="schools">
 
                 <p>@kisi.Name @kisi.Surname went to:</p>
@@ -61,3 +63,4 @@
         <br />
 }
 </div>
+</form>

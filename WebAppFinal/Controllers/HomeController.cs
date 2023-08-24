@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
@@ -15,6 +16,7 @@ namespace WebAppFinal.Controllers
         public static List<Kisi> kisis = new();
         public static List<School> SchoolList = new();
         public static List<Food> FoodList = new();
+        public static int editID;
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -49,7 +51,7 @@ namespace WebAppFinal.Controllers
         public IActionResult SchoolView()
         {
 
-            return View();
+            return View(SchoolList.Count);
         
         }
 
@@ -92,7 +94,7 @@ namespace WebAppFinal.Controllers
         public IActionResult FoodView()
         {
 
-            return View();
+            return View(FoodList.Count);
 
         }
 
@@ -123,7 +125,15 @@ namespace WebAppFinal.Controllers
 
             else
             {
-
+                int kisiId = kisis.Count() - 1;
+                foreach (School school in SchoolList)
+                {
+                    kisis[kisiId].SchoolList.Add(school);
+                }
+                foreach (Food food in FoodList)
+                {
+                    kisis[kisiId].FoodList.Add(food);
+                }
                 return RedirectToAction("ShowKisiList");
 
             }
@@ -132,15 +142,79 @@ namespace WebAppFinal.Controllers
 
         public IActionResult ShowKisiList()
         {
-            int kisiId = kisis.Count() - 1;
-            foreach (School school in SchoolList) {
-                kisis[kisiId].SchoolList.Add(school);                   
-            }
-            foreach (Food food in FoodList)
-            {
-                kisis[kisiId].FoodList.Add(food);
-            }
+
             return View(kisis);
+
+        }
+
+        [HttpPost]
+        public IActionResult ShowKisiList(int kisiIndex)
+        {
+            editID = kisiIndex;
+            return RedirectToAction("EditKisi", new {kisiIndex}) ;
+
+        }
+
+        [HttpGet]
+        public IActionResult EditKisi(int kisiIndex)
+        {
+
+            return View(kisis[kisiIndex]);
+
+        }
+
+        [HttpPost]
+        public IActionResult EditKisi(string Name,string Surname,int Age,int whereTo)
+        {
+            if (whereTo == 0){
+                
+                kisis[editID].Name = Name;
+                kisis[editID].Surname = Surname;
+                kisis[editID].Age = Age;
+                return RedirectToAction("ShowKisiList");
+
+            }
+            else if (whereTo <= kisis[editID].SchoolList.Count)
+            {
+                whereTo--;
+                return RedirectToAction("EditSchool",new {schoolIndex = whereTo});
+
+            }
+            else
+            {
+                whereTo = whereTo - kisis[editID].SchoolList.Count;
+                whereTo--;
+                return RedirectToAction("EditFood", new {foodIndex = whereTo});
+            }
+        }
+
+        [HttpGet]
+        public IActionResult EditSchool(int schoolIndex) { 
+        
+            return View(kisis[editID].SchoolList[schoolIndex]);
+
+        }
+
+        [HttpPost]
+        public IActionResult EditSchool([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] School school)
+        {
+            kisis[editID].SchoolList[school.SchoolId] = school;
+            return RedirectToAction("ShowKisiList");
+
+        }
+
+        [HttpGet]
+        public IActionResult EditFood(int foodIndex)
+        {
+            return View(kisis[editID].FoodList[foodIndex]);
+
+        }
+
+        [HttpPost]
+        public IActionResult EditFood([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] Food food)
+        {
+            kisis[editID].FoodList[food.FoodId] = food;
+            return RedirectToAction("ShowKisiList");
 
         }
     }

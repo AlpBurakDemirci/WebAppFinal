@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Edit Food Page";
+}<h1>@ViewData["Title"]</h1>
+<form asp-controller="Home" asp-action="EditFood" method="post">
+
+<div>
+
+    <input type="hidden" name="ghostCounter" id="ghostCounter" value="2">
+    <input type="hidden" name="FoodId" id="FoodId" value="@Model.FoodId"/>
+
+    <p>     Food's Name --------->  @Model.FoodName     </p>
+    <input name="FoodName" id="FoodName" value="@Model.FoodName" />
+    <p>     Food's Type --------->  @Model.FoodType     </p>
+    <input name="FoodType" id="FoodType" value="@Model.FoodType" />
+    <p>     Food's Cost --------->  @Model.FoodCost     </p>
+    <input name="FoodCost" id="FoodCost" value="@Model.FoodCost" />
+    
+    <button type="submit">Submit Food</button>
+
+</div>
+</form>>

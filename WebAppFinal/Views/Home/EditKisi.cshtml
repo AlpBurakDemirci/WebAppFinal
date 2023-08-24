@@ -1,0 +1,136 @@
+﻿@{
+    ViewData["Title"] = "Edit Person Page";
+}<h1>@ViewData["Title"]</h1>
+<form asp-controller="Home" asp-action="EditKisi" method="post">
+
+<div>
+
+        @{
+                <input type="hidden" name="whereTo" id="whereTo">
+                <input type="hidden" name="ghostCounter" id="ghostCounter" value="0">
+                <input type="hidden" name="Id" id="Id" value="@Model.Id">
+            
+
+                <div>       
+                
+                <p>Person's Name ----->    @Model.Name   </p>                
+                <input name="Name" id="Name" value="@Model.Name"/>           
+                
+                </div>
+           
+
+
+
+                <div>       
+                
+                <p>Person's Surname -->    @Model.Surname</p>                
+                <input name="Surname" id="Surname" value="@Model.Surname"/>
+                
+                </div>
+
+
+            
+            
+                <div>
+                
+                <p>Person's Age ------>    @Model.Age    </p>
+                <input name="Age" id="Age" value="@Model.Age"/>
+                    
+                </div>
+            
+
+                <br/>
+                <br/>
+
+
+                <div> @foreach(var school in Model.SchoolList)
+                {
+                        <div>
+                        
+                            <p>     School's Name ------->  @school.SchoolName</p>
+                        </div>
+                        <br />
+
+
+                        <div>
+
+                            <p>     School's City ------->  @school.SchoolCity       </p>
+                            
+                        </div>
+
+
+                        <br />
+
+
+                        <div>
+
+                            <p>     School's District --->  @school.SchoolDistrict   </p>
+                          
+                        </div>
+
+
+                        <br />
+
+
+                        <div>
+
+                            <p>     School's Score ------>  @school.SchoolScore      </p>
+                            
+                        </div>
+
+                        <button type="button" onclick="ValueChange(@school.SchoolId + 1)">Edit This School</button>
+
+                        <br />
+                }
+                    
+                </div>
+
+                <br />
+                <br />
+                <div>@foreach (var food in Model.FoodList)
+                {
+                    
+                        <div>
+
+                            <p>     Food's Name --------->  @food.FoodName     </p>
+                            
+                        </div>
+
+                        <br />
+
+                        <div>
+
+                            <p>     Food's Type --------->  @food.FoodType     </p>
+                            
+                        </div>
+
+
+                        <br />
+
+                        <div>
+
+                            <p>    Food's Cost --------->  @food.FoodCost     </p>
+                           
+                        </div>
+                        <button type="button" onclick="ValueChange(@Model.SchoolList.Count + @food.FoodId + 1)">Edit This Food</button>
+                }
+                </div>
+                <button type="submit" id="submitButton">Submit Kisi</button>
+        
+        }
+    
+   
+</div>
+
+</form>
+<script>
+
+    const subBut = document.getElementById("submitButton");
+    var whereTo = document.getElementById("whereTo");
+    function ValueChange(value) {
+        whereTo.value = value;
+        subBut.click();
+
+    }
+
+</script>
