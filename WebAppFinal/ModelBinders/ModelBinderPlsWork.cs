@@ -26,6 +26,9 @@ namespace WebAppFinal.ModelBinders
                 case "2":
                     bindingContext.Result = ModelBindingResult.Success(BindModel2(bindingContext));
                     break;
+                case "3":
+                    bindingContext.Result = ModelBindingResult.Success(BindModel3(bindingContext));
+                    break;
             }
         }
         public Kisi BindModel0(ModelBindingContext bindingContext)
@@ -38,12 +41,12 @@ namespace WebAppFinal.ModelBinders
             if (Convert.ToInt32(bindingContext.HttpContext.Request.Form["Id"].ToString()) == 0)
             {
                 int Id = kisisLength - 1;
-                return new Kisi(Name, Surname, Age, Id);
+                return new Kisi(Id, Name, Surname, Age);
             }
             else
             {
                 int Id = Convert.ToInt32(bindingContext.HttpContext.Request.Form["Id"].ToString());
-                return new Kisi(Name, Surname, Age, Id);
+                return new Kisi(Id, Name, Surname, Age);
             }
         }
 
@@ -71,6 +74,45 @@ namespace WebAppFinal.ModelBinders
             Food food = new(FoodId,FoodName, FoodType, FoodCost);
            
             return food;
+
+        }
+        public Kisi BindModel3(ModelBindingContext bindingContext)
+        {
+            int Id = Convert.ToInt32(bindingContext.HttpContext.Request.Form["Id"].ToString());
+            string Name = bindingContext.HttpContext.Request.Form["Name"].ToString();
+            string Surname = bindingContext.HttpContext.Request.Form["Surname"].ToString();
+            int Age = Convert.ToInt32(bindingContext.HttpContext.Request.Form["Age"].ToString());
+
+            List<School> schools = new();
+            List<Food> foods = new();
+            
+            int schoolCount = Convert.ToInt32(bindingContext.HttpContext.Request.Form["schoolCount"].ToString());
+            
+            for (int i = 0; i < schoolCount; i++)
+            {
+                int SchoolId = Convert.ToInt32(bindingContext.HttpContext.Request.Form[$"{i}.SchoolId"].ToString());
+                string SchoolName = bindingContext.HttpContext.Request.Form[$"{i}.SchoolName"].ToString();
+                string SchoolCity = bindingContext.HttpContext.Request.Form[$"{i}.SchoolCity"].ToString();
+                string SchoolDistrict = bindingContext.HttpContext.Request.Form[$"{i}.SchoolDistrict"].ToString();
+                int SchoolScore = Convert.ToInt32(bindingContext.HttpContext.Request.Form[$"{i}.SchoolScore"].ToString());
+                School school = new(SchoolId, SchoolName, SchoolCity, SchoolDistrict, SchoolScore);
+                schools.Add(school);
+            }
+            
+            int foodCount = Convert.ToInt32(bindingContext.HttpContext.Request.Form["foodCount"].ToString());
+            
+            for (int i = 0; i < foodCount; i++)
+            {
+
+                int FoodId = Convert.ToInt32(bindingContext.HttpContext.Request.Form[$"{i}.FoodId"].ToString());
+                string FoodName = bindingContext.HttpContext.Request.Form[$"{i}.FoodName"].ToString();
+                string FoodType = bindingContext.HttpContext.Request.Form[$"{i}.FoodType"].ToString();
+                int FoodCost = Convert.ToInt32(bindingContext.HttpContext.Request.Form[$"{i}.FoodCost"].ToString());
+                Food food = new(FoodId, FoodName, FoodType, FoodCost);
+                foods.Add(food);
+            }
+
+            return new Kisi(Id,Name, Surname, Age, schools, foods);
 
         }
     }
