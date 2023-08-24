@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Edit School Page";
+}<h1>@ViewData["Title"]</h1>
+<form asp-controller="Home" asp-action="EditSchool" method="post">
+<div>
+
+    <input type="hidden" name="ghostCounter" id="ghostCounter" value="1">
+    <input type="hidden" name="SchoolId" id="SchoolId" value="@Model.SchoolId"/>
+
+    <p>     School's Name ------->  @Model.SchoolName</p>
+    <input name="SchoolName" id="SchoolName" value="@Model.SchoolName" />
+
+    <p>     School's City ------->  @Model.SchoolCity</p>
+    <input name="SchoolCity" id="SchoolCity" value="@Model.SchoolCity" />
+
+    <p>     School's District --->  @Model.SchoolDistrict</p>
+    <input name="SchoolDistrict" id="SchoolDistrict" value="@Model.SchoolDistrict" />
+
+    <p>     School's Score ------>  @Model.SchoolScore</p>
+    <input name="SchoolScore" id="SchoolScore" value="@Model.SchoolScore" />
+    
+    <button type="submit">Submit School</button>
+
+</div>
+</form>

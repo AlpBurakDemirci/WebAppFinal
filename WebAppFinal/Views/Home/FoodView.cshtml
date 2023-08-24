@@ -3,11 +3,12 @@
 }
 @using WebAppFinal.Models
 <h1>@ViewData["Title"]</h1>
-<form asp-controller="Home" asp-action="OtherFood" method="post">
+<form asp-controller="Home" asp-action="FoodView" method="post">
 
     <p>Please enter the FOODS NAME:         <input type="text" id="FoodName" name="FoodName" /></p>
     <p>Please enter the FOODS TYPE:         <input type="text" id="FoodType" name="FoodType" /></p>
     <p>Please enter the FOODS COST:         <input type="number" id="FoodCost" name="FoodCost" /></p>
+                                            <input type="hidden" name="FoodId" id="FoodId" value="@Model" />
                                             <input type="hidden" name="ghostCounter" value="2" />
                             <button type="submit">Next</button>
 

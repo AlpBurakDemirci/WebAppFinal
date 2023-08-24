@@ -3,11 +3,12 @@
 }
 @using WebAppFinal.Models
 <h1>@ViewData["Title"]</h1>
-<form asp-controller="Home" asp-action="OtherSchool" method="post">
+<form asp-controller="Home" asp-action="SchoolView" method="post">
     <p>Please enter the SCHOOLS NAME:       <input type="text" id="SchoolName" name="SchoolName" /></p>
     <p>Please enter the SCHOOLS CITY:       <input type="text" id="SchoolCity" name="SchoolCity" /></p>
     <p>Please enter the SCHOOLS DISTRICT:   <input type="text" id="SchoolDistrict" name="SchoolDistrict" /></p>
     <p>Please enter the SCHOOLS SCORE:      <input type="number" id="SchoolScore" name="SchoolScore" /></p>
+                                            <input type="hidden" name="SchoolId" id="SchoolId" value="@Model" />
                                             <input type="hidden" name="ghostCounter" value="1" />
                                     <button type="submit">Next</button>
 </form> 

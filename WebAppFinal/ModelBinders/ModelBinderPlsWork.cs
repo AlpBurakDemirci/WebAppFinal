@@ -12,8 +12,7 @@ namespace WebAppFinal.ModelBinders
 {
     public class ModelBinderPlsWork : IModelBinder
     {
-        public static List<School> Schools { get; set; } = new();
-        public static List<Food> Foods { get; set; } = new();
+        public static int kisisLength = 0;
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
             switch (bindingContext.HttpContext.Request.Form["ghostCounter"])
@@ -31,22 +30,31 @@ namespace WebAppFinal.ModelBinders
         }
         public Kisi BindModel0(ModelBindingContext bindingContext)
         {
+            kisisLength++;
             string Name = bindingContext.HttpContext.Request.Form["Name"].ToString();
             string Surname = bindingContext.HttpContext.Request.Form["Surname"].ToString();
             int Age = Convert.ToInt32(bindingContext.HttpContext.Request.Form["Age"].ToString());
 
-            return new Kisi(Name, Surname, Age);
+            if (Convert.ToInt32(bindingContext.HttpContext.Request.Form["Id"].ToString()) == 0)
+            {
+                int Id = kisisLength - 1;
+                return new Kisi(Name, Surname, Age, Id);
+            }
+            else
+            {
+                int Id = Convert.ToInt32(bindingContext.HttpContext.Request.Form["Id"].ToString());
+                return new Kisi(Name, Surname, Age, Id);
+            }
         }
 
         public School BindModel1(ModelBindingContext bindingContext)
         {
+            int SchoolId = Convert.ToInt32(bindingContext.HttpContext.Request.Form["SchoolId"].ToString());
             string SchoolName = bindingContext.HttpContext.Request.Form["SchoolName"].ToString();
             string SchoolCity = bindingContext.HttpContext.Request.Form["SchoolCity"].ToString();
             string SchoolDistrict = bindingContext.HttpContext.Request.Form["SchoolDistrict"].ToString();
             int SchoolScore = Convert.ToInt32(bindingContext.HttpContext.Request.Form["SchoolScore"].ToString());
-            School school = new(SchoolName, SchoolCity, SchoolDistrict, SchoolScore);
-         
-            Schools.Add(school);
+            School school = new(SchoolId,SchoolName, SchoolCity, SchoolDistrict, SchoolScore);
             
             return school;
         
@@ -55,14 +63,13 @@ namespace WebAppFinal.ModelBinders
          
 
         public Food BindModel2(ModelBindingContext bindingContext)
-        {       
+        {
+            int FoodId = Convert.ToInt32(bindingContext.HttpContext.Request.Form["FoodId"].ToString());
             string FoodName = bindingContext.HttpContext.Request.Form["FoodName"].ToString();
             string FoodType = bindingContext.HttpContext.Request.Form["FoodType"].ToString();
             int FoodCost = Convert.ToInt32(bindingContext.HttpContext.Request.Form["FoodCost"].ToString());
-            Food food = new(FoodName, FoodType, FoodCost);
-            
-            Foods.Add(food);
-            
+            Food food = new(FoodId,FoodName, FoodType, FoodCost);
+           
             return food;
 
         }

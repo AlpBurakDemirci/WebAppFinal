@@ -4,17 +4,9 @@
 @using WebAppFinal.Models
 <h1>@ViewData["Title"]</h1>
 
-<form asp-controller="Home" asp-action="SchoolView" method="post", id="formId">
+<form asp-controller="Home" asp-action="OtherSchool" method="post", id="formId">
 
     <p>Did this person went to any other SCHOOLS</p>
-    <button type="submit" id="YesButton">YES</button>
-    <button type="button" id="NoButton" onclick="nobuttonclick()">NO</button>
+    <button type="submit" id="YesButton" name="YesNo" value="True">YES</button>
+    <button type="submit" id="NoButton" name="YesNo" value="False">NO</button>
 </form>
-
-<script>
-    function nobuttonclick() {
-        var form = document.getElementById("formId");
-        form.action = '@Url.Action("FoodView", "Home")';
-        form.submit();
-    }
-</script>
