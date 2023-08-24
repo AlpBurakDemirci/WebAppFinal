@@ -6,15 +6,16 @@
 <div>
 
         @{
-                <input type="hidden" name="whereTo" id="whereTo">
-                <input type="hidden" name="ghostCounter" id="ghostCounter" value="0">
-                <input type="hidden" name="Id" id="Id" value="@Model.Id">
+                int alpha = Model.SchoolList.Count;
+                int beta = Model.FoodList.Count;
+                <input type="hidden" name="ghostCounter" value="3">
+                <input type="hidden" name="Id" value="@Model.Id">
             
 
                 <div>       
                 
                 <p>Person's Name ----->    @Model.Name   </p>                
-                <input name="Name" id="Name" value="@Model.Name"/>           
+                <input name="Name" value="@Model.Name"/>           
                 
                 </div>
            
@@ -24,7 +25,7 @@
                 <div>       
                 
                 <p>Person's Surname -->    @Model.Surname</p>                
-                <input name="Surname" id="Surname" value="@Model.Surname"/>
+                <input name="Surname" value="@Model.Surname"/>
                 
                 </div>
 
@@ -34,74 +35,87 @@
                 <div>
                 
                 <p>Person's Age ------>    @Model.Age    </p>
-                <input name="Age" id="Age" value="@Model.Age"/>
+                <input name="Age" value="@Model.Age"/>
                     
                 </div>
-            
-
-                <br/>
-                <br/>
 
 
-                <div> @foreach(var school in Model.SchoolList)
+            <br/>
+            <br/>
+
+            int i = 0;
+            <div> @foreach(var school in Model.SchoolList)
                 {
+                    i++;
+                        <input type="hidden" name="@($"{school.SchoolId}.SchoolId")" value="@school.SchoolId" />
+                        
                         <div>
                         
-                            <p>     School's Name ------->  @school.SchoolName</p>
+                            <p>    @i. School's Name ------->  @school.SchoolName</p>
+                            <input name="@($"{school.SchoolId}.SchoolName")" value="@school.SchoolName"/>
+
                         </div>
+                        
+
                         <br />
 
 
                         <div>
 
-                            <p>     School's City ------->  @school.SchoolCity       </p>
+                        <p>    @i. School's City ------->  @school.SchoolCity       </p>
+                            <input name="@($"{school.SchoolId}.SchoolCity")" value="@school.SchoolCity" />
+                        
+                        </div>
+
+
+                        <br />
+
+
+                        <div>
+
+                        <p>   @i. School's District --->  @school.SchoolDistrict   </p>
+                            <input name="@($"{school.SchoolId}.SchoolDistrict")" value="@school.SchoolDistrict" />
+                        
+                        </div>
+
+
+                        <br />
+
+
+                        <div>
+
+                        <p>   @i. School's Score ------>  @school.SchoolScore      </p>
+                            <input name="@($"{school.SchoolId}.SchoolScore")" value="@school.SchoolScore" />
                             
                         </div>
-
-
-                        <br />
-
-
-                        <div>
-
-                            <p>     School's District --->  @school.SchoolDistrict   </p>
-                          
-                        </div>
-
-
-                        <br />
-
-
-                        <div>
-
-                            <p>     School's Score ------>  @school.SchoolScore      </p>
-                            
-                        </div>
-
-                        <button type="button" onclick="ValueChange(@school.SchoolId + 1)">Edit This School</button>
 
                         <br />
                 }
                     
                 </div>
 
-                <br />
-                <br />
+            <br />
+            <br />
+            i = 0;
                 <div>@foreach (var food in Model.FoodList)
-                {
+                    {
+                        i++;
+                        <input type="hidden" name="@($"{food.FoodId}.FoodId")" value="@food.FoodId" />
                     
                         <div>
 
-                            <p>     Food's Name --------->  @food.FoodName     </p>
-                            
+                            <p>    @i. Food's Name --------->  @food.FoodName     </p>
+                            <input name="@($"{food.FoodId}.FoodName")" value="@food.FoodName"/>
+                        
                         </div>
 
                         <br />
 
                         <div>
 
-                            <p>     Food's Type --------->  @food.FoodType     </p>
-                            
+                        <p>  @i. Food's Type --------->  @food.FoodType     </p>
+                            <input name="@($"{food.FoodId}.FoodType")" value="@food.FoodType" />
+                        
                         </div>
 
 
@@ -109,13 +123,15 @@
 
                         <div>
 
-                            <p>    Food's Cost --------->  @food.FoodCost     </p>
-                           
+                        <p>   @i. Food's Cost --------->  @food.FoodCost     </p>
+                            <input name="@($"{food.FoodId}.FoodCost")" value="@food.FoodCost" />
+                        
                         </div>
-                        <button type="button" onclick="ValueChange(@Model.SchoolList.Count + @food.FoodId + 1)">Edit This Food</button>
                 }
                 </div>
-                <button type="submit" id="submitButton">Submit Kisi</button>
+                <input type="hidden" name="schoolCount" value="@alpha">
+                <input type="hidden" name="foodCount" value="@beta">
+                <button type="submit">Submit Changes</button>
         
         }
     
@@ -123,14 +139,3 @@
 </div>
 
 </form>
-<script>
-
-    const subBut = document.getElementById("submitButton");
-    var whereTo = document.getElementById("whereTo");
-    function ValueChange(value) {
-        whereTo.value = value;
-        subBut.click();
-
-    }
-
-</script>

@@ -15,12 +15,12 @@ namespace WebAppFinal.Models
         public List<Food>? FoodList { get; set; } = new List<Food>();
         public Kisi() { }
 
-        public Kisi(string Name, string Surname, int Age, int Id)
+        public Kisi(int Id,string Name, string Surname, int Age)
         {
+            this.Id = Id;
             this.Name = Name;
             this.Surname = Surname;
             this.Age = Age;
-            this.Id = Id;
         }
         public Kisi(string Name, string Surname, int Age, List<School> SchoolList)
         {
@@ -34,7 +34,7 @@ namespace WebAppFinal.Models
             }
         }
         public Kisi(string Name, string Surname, int Age, List<School> SchoolList, List<Food> FoodList) 
-        { 
+        {
             this.Name = Name;
             this.Surname = Surname;
             this.Age = Age;
@@ -48,6 +48,23 @@ namespace WebAppFinal.Models
                 this.FoodList.Add(fakeFood);
             }
         }
-        
+        public Kisi(int Id, string Name, string Surname, int Age, List<School> SchoolList, List<Food> FoodList)
+        {
+            this.Id = Id;
+            this.Name = Name;
+            this.Surname = Surname;
+            this.Age = Age;
+            for (int i = 0; i < SchoolList.Count; i++)
+            {
+                School fakeSchool = new(SchoolList[i].SchoolId, SchoolList[i].SchoolName, SchoolList[i].SchoolCity, SchoolList[i].SchoolDistrict, SchoolList[i].SchoolScore);
+                this.SchoolList.Add(fakeSchool);
+            }
+            for (int i = 0; i < FoodList.Count; i++)
+            {
+                Food fakeFood = new(FoodList[i].FoodId, FoodList[i].FoodName, FoodList[i].FoodType, FoodList[i].FoodCost);
+                this.FoodList.Add(fakeFood);
+            }
+
+        }
     }
 }

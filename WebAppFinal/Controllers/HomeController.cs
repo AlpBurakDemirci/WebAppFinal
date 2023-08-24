@@ -164,58 +164,12 @@ namespace WebAppFinal.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditKisi(string Name,string Surname,int Age,int whereTo)
+        public IActionResult EditKisi([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] Kisi kisi)
         {
-            if (whereTo == 0){
-                
-                kisis[editID].Name = Name;
-                kisis[editID].Surname = Surname;
-                kisis[editID].Age = Age;
-                return RedirectToAction("ShowKisiList");
 
-            }
-            else if (whereTo <= kisis[editID].SchoolList.Count)
-            {
-                whereTo--;
-                return RedirectToAction("EditSchool",new {schoolIndex = whereTo});
-
-            }
-            else
-            {
-                whereTo = whereTo - kisis[editID].SchoolList.Count;
-                whereTo--;
-                return RedirectToAction("EditFood", new {foodIndex = whereTo});
-            }
-        }
-
-        [HttpGet]
-        public IActionResult EditSchool(int schoolIndex) { 
-        
-            return View(kisis[editID].SchoolList[schoolIndex]);
-
-        }
-
-        [HttpPost]
-        public IActionResult EditSchool([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] School school)
-        {
-            kisis[editID].SchoolList[school.SchoolId] = school;
+            kisis[editID] = kisi;
             return RedirectToAction("ShowKisiList");
-
         }
 
-        [HttpGet]
-        public IActionResult EditFood(int foodIndex)
-        {
-            return View(kisis[editID].FoodList[foodIndex]);
-
-        }
-
-        [HttpPost]
-        public IActionResult EditFood([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] Food food)
-        {
-            kisis[editID].FoodList[food.FoodId] = food;
-            return RedirectToAction("ShowKisiList");
-
-        }
     }
 }
