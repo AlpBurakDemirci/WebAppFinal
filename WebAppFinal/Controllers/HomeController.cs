@@ -6,17 +6,15 @@ using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using WebAppFinal.Models;
 
 namespace WebAppFinal.Controllers
-{
+{   
     public class HomeController : Controller
-    {
+    {   
         private readonly ILogger<HomeController> _logger;
-        public static List<Kisi> kisis = new();
-        public static List<School> SchoolList = new();
-        public static List<Food> FoodList = new();
-        public static int editID;
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -29,9 +27,8 @@ namespace WebAppFinal.Controllers
 
         public IActionResult Privacy()
         {
-            SchoolList.Clear();
-            FoodList.Clear();
-            return View();
+            var Db = new DataBaseDEMO();
+            return View(Db.Kisiler.Count() + 1);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -43,15 +40,18 @@ namespace WebAppFinal.Controllers
         [HttpPost]
         public IActionResult CreateKisi([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] Kisi kisi)
         {
-            kisis.Add(kisi);
+            var Db = new DataBaseDEMO();
+            Db.Add(kisi);
+            Db.SaveChanges();
             return RedirectToAction("SchoolView");
         }
 
         [HttpGet]
         public IActionResult SchoolView()
         {
-
-            return View(SchoolList.Count);
+            var Db = new DataBaseDEMO();
+            Tuple<int, int> tuple = new(Db.Okullar.Count() + 1, Db.Kisiler.Count());
+            return View(tuple);
         
         }
 
@@ -59,8 +59,9 @@ namespace WebAppFinal.Controllers
 
         public IActionResult SchoolView([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] School school)
         {
-
-            SchoolList.Add(school);
+            var Db = new DataBaseDEMO();
+            Db.Add(school);
+            Db.SaveChanges();
             return RedirectToAction("OtherSchool");
 
         }
@@ -88,20 +89,22 @@ namespace WebAppFinal.Controllers
             
             }
         }
-
-
         [HttpGet]
         public IActionResult FoodView()
         {
 
-            return View(FoodList.Count);
+            var Db = new DataBaseDEMO();
+            Tuple<int, int> tuple = new(Db.Yiyecekler.Count() + 1, Db.Kisiler.Count());
+            return View(tuple);
 
         }
 
         [HttpPost]
         public IActionResult FoodView([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] Food food)
         {
-            FoodList.Add(food);
+            var Db = new DataBaseDEMO();
+            Db.Add(food);
+            Db.SaveChanges();
             return RedirectToAction("OtherFood");
 
         }
@@ -124,16 +127,7 @@ namespace WebAppFinal.Controllers
             }
 
             else
-            {
-                int kisiId = kisis.Count() - 1;
-                foreach (School school in SchoolList)
-                {
-                    kisis[kisiId].SchoolList.Add(school);
-                }
-                foreach (Food food in FoodList)
-                {
-                    kisis[kisiId].FoodList.Add(food);
-                }
+            {   
                 return RedirectToAction("ShowKisiList");
 
             }
@@ -142,16 +136,14 @@ namespace WebAppFinal.Controllers
 
         public IActionResult ShowKisiList()
         {
-
-            return View(kisis);
+            return View();
 
         }
 
         [HttpPost]
         public IActionResult ShowKisiList(int kisiIndex)
         {
-            editID = kisiIndex;
-            return RedirectToAction("EditKisi", new {kisiIndex}) ;
+            return RedirectToAction("EditKisi",new { kisiIndex }) ;
 
         }
 
@@ -159,17 +151,27 @@ namespace WebAppFinal.Controllers
         public IActionResult EditKisi(int kisiIndex)
         {
 
-            return View(kisis[kisiIndex]);
+            return View(kisiIndex);
 
         }
 
         [HttpPost]
         public IActionResult EditKisi([ModelBinder(typeof(ModelBinders.ModelBinderPlsWork))] Kisi kisi)
         {
+            var Db = new DataBaseDEMO();
+            {
+                Db.Kisiler.Entry(Db.Kisiler.First(k => k.Id == kisi.Id)).CurrentValues.SetValues(kisi);
+                foreach (var school in kisi.SchoolList){
 
-            kisis[editID] = kisi;
-            return RedirectToAction("ShowKisiList");
+                    Db.Okullar.Entry(Db.Okullar.First(s => s.SchoolId == school.SchoolId)).CurrentValues.SetValues(school);
+                }
+                foreach (var food in kisi.FoodList){
+
+                    Db.Yiyecekler.Entry(Db.Yiyecekler.First(f => f.FoodId == food.FoodId)).CurrentValues.SetValues(food);
+                }
+                Db.SaveChanges();
+                return RedirectToAction("ShowKisiList");
+            }
         }
-
     }
 }

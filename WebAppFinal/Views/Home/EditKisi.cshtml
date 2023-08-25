@@ -6,16 +6,19 @@
 <div>
 
         @{
-                int alpha = Model.SchoolList.Count;
-                int beta = Model.FoodList.Count;
+                var db = new DataBaseDEMO();
+                int kisiId = Model;
+                var kisi = db.Kisiler.FirstOrDefault(k => k.Id == kisiId);
+                var schoollar = db.Okullar;
+                var foodlar = db.Yiyecekler;
                 <input type="hidden" name="ghostCounter" value="3">
-                <input type="hidden" name="Id" value="@Model.Id">
+                <input type="hidden" name="Id" value="@Model">
             
 
                 <div>       
                 
-                <p>Person's Name ----->    @Model.Name   </p>                
-                <input name="Name" value="@Model.Name"/>           
+                <p>Person's Name ----->    @kisi.Name</p>                
+                <input type="text" name="Name" value="@kisi.Name"/>           
                 
                 </div>
            
@@ -24,8 +27,8 @@
 
                 <div>       
                 
-                <p>Person's Surname -->    @Model.Surname</p>                
-                <input name="Surname" value="@Model.Surname"/>
+                <p>Person's Surname -->    @kisi.Surname</p>                
+                <input type="text" name="Surname" value="@kisi.Surname"/>
                 
                 </div>
 
@@ -34,25 +37,25 @@
             
                 <div>
                 
-                <p>Person's Age ------>    @Model.Age    </p>
-                <input name="Age" value="@Model.Age"/>
+                <p>Person's Age ------>    @kisi.Age    </p>
+                <input type="number" name="Age" value="@kisi.Age"/>
                     
                 </div>
 
 
             <br/>
             <br/>
-
+          
             int i = 0;
-            <div> @foreach(var school in Model.SchoolList)
+            <div>
+                @foreach (var school in schoollar.Where((s => s.KisiId == kisiId)))
                 {
                     i++;
-                        <input type="hidden" name="@($"{school.SchoolId}.SchoolId")" value="@school.SchoolId" />
                         
                         <div>
                         
                             <p>    @i. School's Name ------->  @school.SchoolName</p>
-                            <input name="@($"{school.SchoolId}.SchoolName")" value="@school.SchoolName"/>
+                            <input type="text" name="@($"{school.SchoolId}.SchoolName")" value="@school.SchoolName"/>
 
                         </div>
                         
@@ -63,7 +66,7 @@
                         <div>
 
                         <p>    @i. School's City ------->  @school.SchoolCity       </p>
-                            <input name="@($"{school.SchoolId}.SchoolCity")" value="@school.SchoolCity" />
+                            <input type="text" name="@($"{school.SchoolId}.SchoolCity")" value="@school.SchoolCity" />
                         
                         </div>
 
@@ -74,7 +77,7 @@
                         <div>
 
                         <p>   @i. School's District --->  @school.SchoolDistrict   </p>
-                            <input name="@($"{school.SchoolId}.SchoolDistrict")" value="@school.SchoolDistrict" />
+                            <input type="text" name="@($"{school.SchoolId}.SchoolDistrict")" value="@school.SchoolDistrict" />
                         
                         </div>
 
@@ -85,7 +88,7 @@
                         <div>
 
                         <p>   @i. School's Score ------>  @school.SchoolScore      </p>
-                            <input name="@($"{school.SchoolId}.SchoolScore")" value="@school.SchoolScore" />
+                            <input type="number" name="@($"{school.SchoolId}.SchoolScore")" value="@school.SchoolScore" />
                             
                         </div>
 
@@ -97,15 +100,15 @@
             <br />
             <br />
             i = 0;
-                <div>@foreach (var food in Model.FoodList)
+            <div>
+                @foreach (var food in foodlar.Where(f => f.KisiId == kisiId))
                     {
                         i++;
-                        <input type="hidden" name="@($"{food.FoodId}.FoodId")" value="@food.FoodId" />
                     
                         <div>
 
                             <p>    @i. Food's Name --------->  @food.FoodName     </p>
-                            <input name="@($"{food.FoodId}.FoodName")" value="@food.FoodName"/>
+                            <input type="text" name="@($"{food.FoodId}.FoodName")" value="@food.FoodName"/>
                         
                         </div>
 
@@ -114,7 +117,7 @@
                         <div>
 
                         <p>  @i. Food's Type --------->  @food.FoodType     </p>
-                            <input name="@($"{food.FoodId}.FoodType")" value="@food.FoodType" />
+                            <input type="text" name="@($"{food.FoodId}.FoodType")" value="@food.FoodType" />
                         
                         </div>
 
@@ -124,13 +127,11 @@
                         <div>
 
                         <p>   @i. Food's Cost --------->  @food.FoodCost     </p>
-                            <input name="@($"{food.FoodId}.FoodCost")" value="@food.FoodCost" />
+                            <input type="number" name="@($"{food.FoodId}.FoodCost")" value="@food.FoodCost" />
                         
                         </div>
                 }
                 </div>
-                <input type="hidden" name="schoolCount" value="@alpha">
-                <input type="hidden" name="foodCount" value="@beta">
                 <button type="submit">Submit Changes</button>
         
         }

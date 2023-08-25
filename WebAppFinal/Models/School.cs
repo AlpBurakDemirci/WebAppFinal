@@ -7,14 +7,16 @@
         public string SchoolCity { get; set; }
         public string SchoolDistrict { get; set; }
         public int SchoolScore { get; set; }
+        public int KisiId { get; set; }
 
-        public School(int SchoolId,string SchoolName, string SchoolCity, string SchoolDistrict, int SchoolScore)
+        public School(int SchoolId,string SchoolName, string SchoolCity, string SchoolDistrict, int SchoolScore, int KisiId)
         {
             this.SchoolId = SchoolId;
             this.SchoolName = SchoolName;
             this.SchoolCity = SchoolCity;
             this.SchoolDistrict = SchoolDistrict;
             this.SchoolScore = SchoolScore;
+            this.KisiId = KisiId;
 
         }
     }

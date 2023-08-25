@@ -6,13 +6,14 @@
         public string FoodName { get; set; }
         public string FoodType { get; set; }
         public int FoodCost { get; set; }
-
-        public Food(int FoodId,string FoodName, string FoodType, int FoodCost)
+        public int KisiId { get; set; }
+        public Food(int FoodId,string FoodName, string FoodType, int FoodCost, int KisiId)
         {
             this.FoodId = FoodId;
             this.FoodName = FoodName;
             this.FoodType = FoodType;
             this.FoodCost = FoodCost;
+            this.KisiId = KisiId;
         }
     }
 }

@@ -1,7 +1,10 @@
+global using WebAppFinal.DataBase;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<DataBaseDEMO>();
 
 var app = builder.Build();
 

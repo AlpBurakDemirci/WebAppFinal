@@ -12,7 +12,6 @@ namespace WebAppFinal.ModelBinders
 {
     public class ModelBinderPlsWork : IModelBinder
     {
-        public static int kisisLength = 0;
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
             switch (bindingContext.HttpContext.Request.Form["ghostCounter"])
@@ -33,21 +32,11 @@ namespace WebAppFinal.ModelBinders
         }
         public Kisi BindModel0(ModelBindingContext bindingContext)
         {
-            kisisLength++;
             string Name = bindingContext.HttpContext.Request.Form["Name"].ToString();
             string Surname = bindingContext.HttpContext.Request.Form["Surname"].ToString();
             int Age = Convert.ToInt32(bindingContext.HttpContext.Request.Form["Age"].ToString());
-
-            if (Convert.ToInt32(bindingContext.HttpContext.Request.Form["Id"].ToString()) == 0)
-            {
-                int Id = kisisLength - 1;
-                return new Kisi(Id, Name, Surname, Age);
-            }
-            else
-            {
-                int Id = Convert.ToInt32(bindingContext.HttpContext.Request.Form["Id"].ToString());
-                return new Kisi(Id, Name, Surname, Age);
-            }
+            int Id = Convert.ToInt32(bindingContext.HttpContext.Request.Form["Id"].ToString());
+            return new Kisi(Id, Name, Surname, Age);
         }
 
         public School BindModel1(ModelBindingContext bindingContext)
@@ -57,7 +46,8 @@ namespace WebAppFinal.ModelBinders
             string SchoolCity = bindingContext.HttpContext.Request.Form["SchoolCity"].ToString();
             string SchoolDistrict = bindingContext.HttpContext.Request.Form["SchoolDistrict"].ToString();
             int SchoolScore = Convert.ToInt32(bindingContext.HttpContext.Request.Form["SchoolScore"].ToString());
-            School school = new(SchoolId,SchoolName, SchoolCity, SchoolDistrict, SchoolScore);
+            int WhoWentTo = Convert.ToInt32(bindingContext.HttpContext.Request.Form["WhoWentTo"].ToString());
+            School school = new(SchoolId,SchoolName, SchoolCity, SchoolDistrict, SchoolScore, WhoWentTo);
             
             return school;
         
@@ -71,7 +61,8 @@ namespace WebAppFinal.ModelBinders
             string FoodName = bindingContext.HttpContext.Request.Form["FoodName"].ToString();
             string FoodType = bindingContext.HttpContext.Request.Form["FoodType"].ToString();
             int FoodCost = Convert.ToInt32(bindingContext.HttpContext.Request.Form["FoodCost"].ToString());
-            Food food = new(FoodId,FoodName, FoodType, FoodCost);
+            int WhoLovesIt = Convert.ToInt32(bindingContext.HttpContext.Request.Form["WhoLovesIt"].ToString());
+            Food food = new(FoodId,FoodName, FoodType, FoodCost, WhoLovesIt);
            
             return food;
 
@@ -85,34 +76,35 @@ namespace WebAppFinal.ModelBinders
 
             List<School> schools = new();
             List<Food> foods = new();
+            var Db = new DataBaseDEMO();
             
-            int schoolCount = Convert.ToInt32(bindingContext.HttpContext.Request.Form["schoolCount"].ToString());
-            
-            for (int i = 0; i < schoolCount; i++)
+            foreach (School school in Db.Okullar.Where(s => s.KisiId == Id))
             {
-                int SchoolId = Convert.ToInt32(bindingContext.HttpContext.Request.Form[$"{i}.SchoolId"].ToString());
-                string SchoolName = bindingContext.HttpContext.Request.Form[$"{i}.SchoolName"].ToString();
-                string SchoolCity = bindingContext.HttpContext.Request.Form[$"{i}.SchoolCity"].ToString();
-                string SchoolDistrict = bindingContext.HttpContext.Request.Form[$"{i}.SchoolDistrict"].ToString();
-                int SchoolScore = Convert.ToInt32(bindingContext.HttpContext.Request.Form[$"{i}.SchoolScore"].ToString());
-                School school = new(SchoolId, SchoolName, SchoolCity, SchoolDistrict, SchoolScore);
-                schools.Add(school);
+                int SchoolId = school.SchoolId;
+                string SchoolName = bindingContext.HttpContext.Request.Form[$"{school.SchoolId}.SchoolName"].ToString();
+                string SchoolCity = bindingContext.HttpContext.Request.Form[$"{school.SchoolId}.SchoolCity"].ToString();
+                string SchoolDistrict = bindingContext.HttpContext.Request.Form[$"{school.SchoolId}.SchoolDistrict"].ToString();
+                string fakeSchoolScore = bindingContext.HttpContext.Request.Form[$"{school.SchoolId}.SchoolScore"].ToString();//böyle yaptım çünkü int SchoolScore = Convert.ToInt32(bindingContext.HttpContext.Request.Form[$"{school.SchoolId}.SchoolScore"].ToString());  ÇALIŞMIYOR
+                int SchoolScore = Convert.ToInt32(fakeSchoolScore);
+                int KisiId = school.KisiId;
+                School fakeSchool = new(SchoolId, SchoolName, SchoolCity, SchoolDistrict, SchoolScore, KisiId);
+                schools.Add(fakeSchool);
             }
             
-            int foodCount = Convert.ToInt32(bindingContext.HttpContext.Request.Form["foodCount"].ToString());
             
-            for (int i = 0; i < foodCount; i++)
+            foreach (Food food in Db.Yiyecekler.Where(f => f.KisiId == Id))
             {
-
-                int FoodId = Convert.ToInt32(bindingContext.HttpContext.Request.Form[$"{i}.FoodId"].ToString());
-                string FoodName = bindingContext.HttpContext.Request.Form[$"{i}.FoodName"].ToString();
-                string FoodType = bindingContext.HttpContext.Request.Form[$"{i}.FoodType"].ToString();
-                int FoodCost = Convert.ToInt32(bindingContext.HttpContext.Request.Form[$"{i}.FoodCost"].ToString());
-                Food food = new(FoodId, FoodName, FoodType, FoodCost);
-                foods.Add(food);
+                int FoodId = food.FoodId;
+                string FoodName = bindingContext.HttpContext.Request.Form[$"{food.FoodId}.FoodName"].ToString();
+                string FoodType = bindingContext.HttpContext.Request.Form[$"{food.FoodId}.FoodType"].ToString();
+                string fakeFoodCost = bindingContext.HttpContext.Request.Form[$"{food.FoodId}.FoodCost"].ToString();//schoolscore ile aynı :(
+                int FoodCost = Convert.ToInt32(fakeFoodCost);
+                int KisiId = food.KisiId;
+                Food fakeFood = new(FoodId, FoodName, FoodType, FoodCost, KisiId);
+                foods.Add(fakeFood);
             }
 
-            return new Kisi(Id,Name, Surname, Age, schools, foods);
+            return new Kisi(Id, Name, Surname, Age, schools, foods);
 
         }
     }
