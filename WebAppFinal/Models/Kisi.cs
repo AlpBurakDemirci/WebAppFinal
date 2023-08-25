@@ -29,7 +29,7 @@ namespace WebAppFinal.Models
             this.Age = Age;
             for (int i = 0; i < SchoolList.Count; i++)
             {
-                School fakeSchool = new(SchoolList[i].SchoolId,SchoolList[i].SchoolName, SchoolList[i].SchoolCity, SchoolList[i].SchoolDistrict, SchoolList[i].SchoolScore);
+                School fakeSchool = new(SchoolList[i].SchoolId,SchoolList[i].SchoolName, SchoolList[i].SchoolCity, SchoolList[i].SchoolDistrict, SchoolList[i].SchoolScore, this.Id);
                 this.SchoolList.Add(fakeSchool);
             }
         }
@@ -39,12 +39,12 @@ namespace WebAppFinal.Models
             this.Surname = Surname;
             this.Age = Age;
             for (int i = 0; i < SchoolList.Count; i++) {
-                School fakeSchool = new(SchoolList[i].SchoolId,SchoolList[i].SchoolName, SchoolList[i].SchoolCity, SchoolList[i].SchoolDistrict, SchoolList[i].SchoolScore);
+                School fakeSchool = new(SchoolList[i].SchoolId,SchoolList[i].SchoolName, SchoolList[i].SchoolCity, SchoolList[i].SchoolDistrict, SchoolList[i].SchoolScore, this.Id);
                 this.SchoolList.Add(fakeSchool);    
             }
             for (int i = 0; i <FoodList.Count; i++)
             {
-                Food fakeFood = new(FoodList[i].FoodId,FoodList[i].FoodName, FoodList[i].FoodType, FoodList[i].FoodCost);
+                Food fakeFood = new(FoodList[i].FoodId,FoodList[i].FoodName, FoodList[i].FoodType, FoodList[i].FoodCost, this.Id);
                 this.FoodList.Add(fakeFood);
             }
         }
@@ -56,12 +56,12 @@ namespace WebAppFinal.Models
             this.Age = Age;
             for (int i = 0; i < SchoolList.Count; i++)
             {
-                School fakeSchool = new(SchoolList[i].SchoolId, SchoolList[i].SchoolName, SchoolList[i].SchoolCity, SchoolList[i].SchoolDistrict, SchoolList[i].SchoolScore);
+                School fakeSchool = new(SchoolList[i].SchoolId, SchoolList[i].SchoolName, SchoolList[i].SchoolCity, SchoolList[i].SchoolDistrict, SchoolList[i].SchoolScore, this.Id);
                 this.SchoolList.Add(fakeSchool);
             }
             for (int i = 0; i < FoodList.Count; i++)
             {
-                Food fakeFood = new(FoodList[i].FoodId, FoodList[i].FoodName, FoodList[i].FoodType, FoodList[i].FoodCost);
+                Food fakeFood = new(FoodList[i].FoodId, FoodList[i].FoodName, FoodList[i].FoodType, FoodList[i].FoodCost, this.Id);
                 this.FoodList.Add(fakeFood);
             }
 

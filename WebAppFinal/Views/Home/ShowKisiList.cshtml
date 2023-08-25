@@ -5,21 +5,21 @@
 <h1>@ViewData["Title"]</h1>
 <form asp-controller="Home" asp-action="ShowKisiList" method="post">
 <div>
-        @{
+        @{  var Db = new DataBaseDEMO();
             int i = 0;
             int a = i - 1; 
-            @foreach (var kisi in Model)
+            @foreach (var kisi in Db.Kisiler)
         {
             i++;
             a++;
-            <p style="font-size:x-large">@i. Person is:  @kisi.Name @kisi.Surname  <button type="submit" name="kisiIndex" value=@a>Edit This Person</button>  
-            <div style="font-size:large">@kisi.Name @kisi.Surname is @kisi.Age years old.</div>
+            <p style="font-size:x-large">@i. Person is:  @kisi.Name @kisi.Surname  <button type="submit" name="kisiIndex" value="@kisi.Id">Edit This Person</button>  
+            <div style="font-size:large">@kisi.Name @kisi.Surname is @kisi.Age years old.</div> 
             </p>//not almayı unutma!!!
             <div class="schools">
 
                 <p>@kisi.Name @kisi.Surname went to:</p>
 
-                @foreach (var school in kisi.SchoolList)
+                @foreach (var school in Db.Okullar.Where(s => s.KisiId == kisi.Id))
                 {
                     <br />
 
@@ -38,7 +38,7 @@
 
                 <p>This persons favorite foods are:</p>
 
-                @foreach (var food in kisi.FoodList)
+                    @foreach (var food in Db.Yiyecekler.Where(f => f.KisiId == kisi.Id))
                 {
                     <br/>
 
