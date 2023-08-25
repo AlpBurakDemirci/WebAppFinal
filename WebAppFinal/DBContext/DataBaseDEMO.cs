@@ -12,7 +12,7 @@ namespace WebAppFinal.DataBase
         public DbSet<Kisi> Kisiler { get; set; }
         public DbSet<School> Okullar { get; set; }
         public DbSet<Food> Yiyecekler { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlite(@"Data Source=C:\Users\abdd2\Desktop\DataBase QuestionMark\New.db");
+        protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlite(@"Data Source=C:\Users\abdd2\source\repos\WebAppFinal\WebAppFinal\DataBase\DataBaseWebAppFinal.db");
         
     }
 }
